@@ -126,7 +126,7 @@
     mobileMenu.classList.toggle('hidden');
   });
 
-  // Theme toggle (Blue/Black ↔ Green/White)
+  // Theme toggle
   const toggle = document.getElementById('themeToggle');
   const body = document.body;
   const header = document.getElementById('header');
@@ -135,32 +135,58 @@
   const heroPrimary = document.getElementById('heroPrimary');
   const heroSecondary = document.getElementById('heroSecondary');
 
-  let dark = true;
-
   toggle.addEventListener('click', () => {
-    dark = !dark;
+    body.classList.toggle('light');
 
-    if (!dark) {
-      // 🌞 Light Theme (Green + White)
-      body.className = "bg-white text-black transition-colors duration-300";
-      header.className = "fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-green-300 z-50 transition-colors";
-      logoBox.className = "w-9 h-9 rounded-xl bg-green-600 text-white flex items-center justify-center font-bold text-lg";
-      signupBtn.className = "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold transition";
-      heroPrimary.className = "bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition";
-      heroSecondary.className = "border border-black/30 hover:border-black px-8 py-3 rounded-full transition";
+    const isLight = body.classList.contains('light');
+
+    if (isLight) {
+      // 🌞 Light (Green + White)
+      body.classList.replace('bg-black', 'bg-white');
+      body.classList.replace('text-white', 'text-black');
+
+      header.className =
+        "fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-green-300 z-50 transition-colors";
+
+      logoBox.className =
+        "w-9 h-9 rounded-xl bg-green-600 text-white flex items-center justify-center font-bold text-lg";
+
+      signupBtn.className =
+        "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+
+      heroPrimary.className =
+        "bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition";
+
+      heroSecondary.className =
+        "border border-black/30 hover:border-black px-8 py-3 rounded-full transition";
+
       toggle.textContent = "☀️";
     } else {
-      // 🌙 Dark Theme (Blue + Black)
-      body.className = "bg-black text-white transition-colors duration-300";
-      header.className = "fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors";
-      logoBox.className = "w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg";
-      signupBtn.className = "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition";
-      heroPrimary.className = "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition";
-      heroSecondary.className = "border border-white/30 hover:border-white px-8 py-3 rounded-full transition";
+      // 🌙 Dark (Blue + Black)
+      body.classList.replace('bg-white', 'bg-black');
+      body.classList.replace('text-black', 'text-white');
+
+      header.className =
+        "fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors";
+
+      logoBox.className =
+        "w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg";
+
+      signupBtn.className =
+        "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+
+      heroPrimary.className =
+        "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition";
+
+      heroSecondary.className =
+        "border border-white/30 hover:border-white px-8 py-3 rounded-full transition";
+
       toggle.textContent = "🌙";
     }
   });
 </script>
 
+
 </body>
 </html>
+
