@@ -3,30 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume Builder</title>
+  <title>ApnaResumeBuilder</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- THEME TEXT FIX -->
+  <style>
+    body.light {
+      background-color: white;
+      color: #111827; /* gray-900 */
+    }
+
+    body.light .text-gray-300,
+    body.light .text-gray-400 {
+      color: #4b5563; /* gray-600 */
+    }
+
+    body.light .text-blue-500,
+    body.light .text-blue-400 {
+      color: #16a34a; /* green-600 */
+    }
+
+    body.light .hover\:text-blue-500:hover {
+      color: #16a34a;
+    }
+  </style>
 </head>
 
 <body class="bg-black text-white transition-colors duration-300">
 
 <!-- ================= HEADER ================= -->
-<header id="header" class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors">
+<header id="header"
+  class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
     <!-- Logo -->
     <div class="flex items-center gap-2">
-      <div id="logoBox" class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+      <div id="logoBox"
+        class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
         ARB
       </div>
       <span class="text-xl font-semibold">ApnaResumeBuilder</span>
     </div>
 
-    <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center gap-8 text-gray-300 font-medium">
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8 font-medium text-gray-300">
       <a href="#" class="hover:text-blue-500">Templates</a>
-      <a href="#" class="hover:text-blue-500">Example</a>
+      <a href="#" class="hover:text-blue-500">Examples</a>
       <a href="#" class="hover:text-blue-500">Cover Page</a>
       <a href="#" class="hover:text-blue-500">Contact us</a>
     </nav>
@@ -42,11 +66,11 @@
 
       <a id="signupBtn"
         href="#"
-        class="bg-blue-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-blue-700 transition">
+        class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition">
         Sign up
       </a>
 
-      <!-- Mobile Menu Button -->
+      <!-- Mobile -->
       <button id="menuBtn" class="md:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none"
           viewBox="0 0 24 24" stroke="currentColor">
@@ -61,7 +85,7 @@
   <div id="mobileMenu" class="hidden bg-black border-t border-blue-900 md:hidden">
     <nav class="flex flex-col px-6 py-4 gap-4 text-gray-300">
       <a href="#" class="hover:text-blue-500">Templates</a>
-      <a href="#" class="hover:text-blue-500">Example</a>
+      <a href="#" class="hover:text-blue-500">Examples</a>
       <a href="#" class="hover:text-blue-500">Cover Page</a>
       <a href="#" class="hover:text-blue-500">Contact us</a>
     </nav>
@@ -71,7 +95,7 @@
 <!-- Spacer -->
 <div class="h-24"></div>
 
-<!-- ================= HERO SECTION ================= -->
+<!-- ================= HERO ================= -->
 <section class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
   <!-- Left -->
@@ -81,16 +105,16 @@
       Make Yours in Minutes
     </h1>
 
-    <p class="mt-6 text-gray-400 max-w-xl">
-      Easily create a job-winning resume or update your existing one from any device.
-      Dozens of templates, AI assistance, and full customization.
+    <p class="mt-6 max-w-xl text-gray-400">
+      Easily create a job-winning resume or update your existing one using AI,
+      modern templates, and full customization.
     </p>
 
     <!-- Reviews -->
     <div class="flex items-center gap-3 mt-6 text-sm text-gray-400">
-      <span class="text-green-400">★★★★★</span>
+      <span class="text-green-500">★★★★★</span>
       <span>Great</span>
-      <a href="#" class="text-blue-400 hover:underline">18,061 reviews</a>
+      <a href="#" class="text-blue-500 hover:underline">18,061 reviews</a>
       <span>on Trustpilot</span>
     </div>
 
@@ -101,6 +125,7 @@
         class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition">
         Build My Resume
       </a>
+
       <a id="heroSecondary"
         href="#"
         class="border border-white/30 hover:border-white px-8 py-3 rounded-full transition">
@@ -112,8 +137,8 @@
   <!-- Right Image -->
   <div class="flex justify-center">
     <img src="./images/resume.jpg"
-      alt="Resume Preview"
-      class="w-full max-w-md rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] border border-white/10">
+      class="w-full max-w-md rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] border border-white/10"
+      alt="Resume Preview">
   </div>
 </section>
 
@@ -135,58 +160,32 @@
   const heroPrimary = document.getElementById('heroPrimary');
   const heroSecondary = document.getElementById('heroSecondary');
 
+  let dark = true;
+
   toggle.addEventListener('click', () => {
-    body.classList.toggle('light');
+    dark = !dark;
 
-    const isLight = body.classList.contains('light');
-
-    if (isLight) {
-      // 🌞 Light (Green + White)
-      body.classList.replace('bg-black', 'bg-white');
-      body.classList.replace('text-white', 'text-black');
-
-      header.className =
-        "fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-green-300 z-50 transition-colors";
-
-      logoBox.className =
-        "w-9 h-9 rounded-xl bg-green-600 text-white flex items-center justify-center font-bold text-lg";
-
-      signupBtn.className =
-        "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold transition";
-
-      heroPrimary.className =
-        "bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition";
-
-      heroSecondary.className =
-        "border border-black/30 hover:border-black px-8 py-3 rounded-full transition";
-
+    if (!dark) {
+      // 🌞 LIGHT (Green + White)
+      body.className = "light transition-colors duration-300";
+      header.className = "fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-green-300 z-50 transition-colors";
+      logoBox.className = "w-9 h-9 rounded-xl bg-green-600 text-white flex items-center justify-center font-bold text-lg";
+      signupBtn.className = "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+      heroPrimary.className = "bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition";
+      heroSecondary.className = "border border-black/30 hover:border-black px-8 py-3 rounded-full transition";
       toggle.textContent = "☀️";
     } else {
-      // 🌙 Dark (Blue + Black)
-      body.classList.replace('bg-white', 'bg-black');
-      body.classList.replace('text-black', 'text-white');
-
-      header.className =
-        "fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors";
-
-      logoBox.className =
-        "w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg";
-
-      signupBtn.className =
-        "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition";
-
-      heroPrimary.className =
-        "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition";
-
-      heroSecondary.className =
-        "border border-white/30 hover:border-white px-8 py-3 rounded-full transition";
-
+      // 🌙 DARK (Blue + Black)
+      body.className = "bg-black text-white transition-colors duration-300";
+      header.className = "fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors";
+      logoBox.className = "w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg";
+      signupBtn.className = "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+      heroPrimary.className = "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition";
+      heroSecondary.className = "border border-white/30 hover:border-white px-8 py-3 rounded-full transition";
       toggle.textContent = "🌙";
     }
   });
 </script>
 
-
 </body>
 </html>
-
