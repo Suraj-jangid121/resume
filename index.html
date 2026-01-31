@@ -12,12 +12,12 @@
 <body class="bg-black text-white transition-colors duration-300">
 
 <!-- ================= HEADER ================= -->
-<header class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-gray-800 z-50">
+<header id="header" class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
     <!-- Logo -->
     <div class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg">
+      <div id="logoBox" class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
         ARB
       </div>
       <span class="text-xl font-semibold">ApnaResumeBuilder</span>
@@ -40,10 +40,9 @@
         🌙
       </button>
 
-     
-
-      <a href="#"
-        class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-indigo-700 transition">
+      <a id="signupBtn"
+        href="#"
+        class="bg-blue-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-blue-700 transition">
         Sign up
       </a>
 
@@ -59,13 +58,12 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobileMenu" class="hidden bg-black border-t border-gray-800 md:hidden">
+  <div id="mobileMenu" class="hidden bg-black border-t border-blue-900 md:hidden">
     <nav class="flex flex-col px-6 py-4 gap-4 text-gray-300">
-      <a href="#" class="hover:text-blue-500">Features</a>
       <a href="#" class="hover:text-blue-500">Templates</a>
-      <a href="#" class="hover:text-blue-500">Pricing</a>
-      <a href="#" class="hover:text-blue-500">FAQ</a>
-      <a href="#" class="hover:text-blue-500">Login</a>
+      <a href="#" class="hover:text-blue-500">Example</a>
+      <a href="#" class="hover:text-blue-500">Cover Page</a>
+      <a href="#" class="hover:text-blue-500">Contact us</a>
     </nav>
   </div>
 </header>
@@ -90,19 +88,21 @@
 
     <!-- Reviews -->
     <div class="flex items-center gap-3 mt-6 text-sm text-gray-400">
-      <span class="text-green-500">★★★★★</span>
+      <span class="text-green-400">★★★★★</span>
       <span>Great</span>
-      <a href="#" class="text-blue-500 hover:underline">18,061 reviews</a>
+      <a href="#" class="text-blue-400 hover:underline">18,061 reviews</a>
       <span>on Trustpilot</span>
     </div>
 
     <!-- Buttons -->
     <div class="flex flex-wrap gap-4 mt-8">
-      <a href="#"
-        class="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full transition">
+      <a id="heroPrimary"
+        href="#"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition">
         Build My Resume
       </a>
-      <a href="#"
+      <a id="heroSecondary"
+        href="#"
         class="border border-white/30 hover:border-white px-8 py-3 rounded-full transition">
         Upload Resume
       </a>
@@ -115,7 +115,6 @@
       alt="Resume Preview"
       class="w-full max-w-md rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] border border-white/10">
   </div>
-
 </section>
 
 <!-- ================= SCRIPT ================= -->
@@ -127,20 +126,41 @@
     mobileMenu.classList.toggle('hidden');
   });
 
-  // Theme toggle
+  // Theme toggle (Blue/Black ↔ Green/White)
   const toggle = document.getElementById('themeToggle');
   const body = document.body;
+  const header = document.getElementById('header');
+  const logoBox = document.getElementById('logoBox');
+  const signupBtn = document.getElementById('signupBtn');
+  const heroPrimary = document.getElementById('heroPrimary');
+  const heroSecondary = document.getElementById('heroSecondary');
+
+  let dark = true;
 
   toggle.addEventListener('click', () => {
-    body.classList.toggle('bg-black');
-    body.classList.toggle('text-white');
-    body.classList.toggle('bg-white');
-    body.classList.toggle('text-black');
+    dark = !dark;
 
-    toggle.textContent = body.classList.contains('bg-black') ? '🌙' : '☀️';
+    if (!dark) {
+      // 🌞 Light Theme (Green + White)
+      body.className = "bg-white text-black transition-colors duration-300";
+      header.className = "fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-green-300 z-50 transition-colors";
+      logoBox.className = "w-9 h-9 rounded-xl bg-green-600 text-white flex items-center justify-center font-bold text-lg";
+      signupBtn.className = "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+      heroPrimary.className = "bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-full transition";
+      heroSecondary.className = "border border-black/30 hover:border-black px-8 py-3 rounded-full transition";
+      toggle.textContent = "☀️";
+    } else {
+      // 🌙 Dark Theme (Blue + Black)
+      body.className = "bg-black text-white transition-colors duration-300";
+      header.className = "fixed top-0 left-0 w-full bg-black/90 backdrop-blur border-b border-blue-900 z-50 transition-colors";
+      logoBox.className = "w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg";
+      signupBtn.className = "bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-semibold transition";
+      heroPrimary.className = "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-full transition";
+      heroSecondary.className = "border border-white/30 hover:border-white px-8 py-3 rounded-full transition";
+      toggle.textContent = "🌙";
+    }
   });
 </script>
 
 </body>
 </html>
-
