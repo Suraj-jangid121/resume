@@ -1,198 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up | ApnaResumeBuilder</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign Up | ApnaResumeBuilder</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Theme + Background -->
-  <style>
-    body[data-theme="dark"] {
-      background-color: #000;
-      color: #fff;
-    }
-
-    body[data-theme="light"] {
-      background-color: #f9fafb;
-      color: #111827;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(37,99,235,0.22), transparent 40%),
-        radial-gradient(circle at bottom right, rgba(34,197,94,0.22), transparent 40%);
-      z-index: -1;
-    }
-  </style>
+<!-- Background glow -->
+<style>
+body::before {
+content: "";
+position: fixed;
+inset: 0;
+background:
+radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
+radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
+z-index: -1;
+}
+</style>
 </head>
 
-<body data-theme="dark" class="min-h-screen flex flex-col transition-colors">
+<body class="bg-black text-white min-h-screen flex flex-col">
 
 <!-- ================= HEADER ================= -->
-<header class="border-b border-gray-300/20 backdrop-blur">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
-    <div class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white">
-        ARB
-      </div>
-      <span class="font-semibold">ApnaResumeBuilder</span>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <!-- Theme Toggle -->
-      <button id="themeToggle"
-        class="w-10 h-10 rounded-full border border-gray-400/40 flex items-center justify-center">
-        🌙
-      </button>
-
-      <a href="index.html"
-        class="px-4 py-2 rounded-lg border border-gray-400/40">
-        Home
-      </a>
-    </div>
-  </div>
+<header class="border-b border-gray-800 bg-black/70 backdrop-blur">
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
+ARB
+</div>
+<span class="font-semibold">ApnaResumeBuilder</span>
+</div>
+<a href="index.html"
+class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800">
+Home
+</a>
+</div>
 </header>
 
 <!-- ================= SIGNUP CARD ================= -->
 <main class="flex-1 flex items-center justify-center px-4">
-  <div class="w-full max-w-md p-6 rounded-2xl border border-gray-300/30 bg-black/60 backdrop-blur transition-colors"
-       id="card">
+<div class="w-full max-w-md p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
 
-    <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
+<h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
 
-    <input id="email" type="email" placeholder="Email"
-      class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
+<input id="email" type="email" placeholder="Email"
+class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
 
-    <!-- Password -->
-    <div class="relative mb-3">
-      <input id="password" type="password" placeholder="Password"
-        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
-      <button type="button" onclick="togglePassword('password', this)"
-        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
-    </div>
+<!-- Password -->
+<div class="relative mb-3">
+<input id="password" type="password" placeholder="Password"
+class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
+<button type="button" onclick="togglePassword('password', this)"
+class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+</div>
 
-    <!-- Confirm Password -->
-    <div class="relative mb-4">
-      <input id="confirmPassword" type="password" placeholder="Confirm Password"
-        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
-      <button type="button" onclick="togglePassword('confirmPassword', this)"
-        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
-    </div>
+<!-- Confirm Password -->
+<div class="relative mb-4">
+<input id="confirmPassword" type="password" placeholder="Confirm Password"
+class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
+<button type="button" onclick="togglePassword('confirmPassword', this)"
+class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+</div>
 
-    <p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
+<p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
 
-    <!-- Email Signup -->
-    <button onclick="signup()"
-      class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold text-white">
-      Sign Up
-    </button>
+<button onclick="signup()"
+class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold">
+Sign Up
+</button>
 
-    <!-- Divider -->
-    <div class="flex items-center my-4 gap-3 text-sm text-gray-400">
-      <div class="flex-1 h-px bg-gray-600"></div>
-      OR
-      <div class="flex-1 h-px bg-gray-600"></div>
-    </div>
-
-    <!-- Google Signup -->
-    <button onclick="signupWithGoogle()"
-      class="w-full bg-white text-black py-2 rounded-xl font-semibold flex items-center justify-center gap-2">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5">
-      Sign up with Google
-    </button>
-
-    <p class="text-sm text-center mt-4 text-gray-400">
-      Already have an account?
-      <a href="login.html" class="text-blue-500 hover:underline">Login</a>
-    </p>
-  </div>
+<p class="text-sm text-center mt-4 text-gray-400">
+Already have an account?
+<a href="login.html" class="text-blue-500 hover:underline">Login</a>
+</p>
+</div>
 </main>
 
 <!-- ================= FIREBASE LOGIC ================= -->
 <script type="module">
-  import { auth, googleProvider } from "./firebase.js";
-  import {
-    createUserWithEmailAndPassword,
-    signInWithPopup,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { auth } from "./firebase.js";
+import {
+createUserWithEmailAndPassword,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
   let justSignedUp = false;
 
-  // 👁️ Toggle password visibility
-  window.togglePassword = (id, btn) => {
-    const input = document.getElementById(id);
-    input.type = input.type === "password" ? "text" : "password";
-    btn.textContent = input.type === "password" ? "👁️" : "🙈";
-  };
+// 👁️ Toggle password visibility
+window.togglePassword = (id, btn) => {
+const input = document.getElementById(id);
+if (input.type === "password") {
+input.type = "text";
+btn.textContent = "🙈";
+} else {
+input.type = "password";
+btn.textContent = "👁️";
+}
+};
 
-  // Email signup
-  window.signup = async () => {
-    const email = email.value.trim();
-    const password = password.value;
-    const confirmPassword = confirmPassword.value;
-    errorMsg.classList.add("hidden");
+// 🔐 SIGNUP FUNCTION
+window.signup = async () => {
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+const confirmPassword = document.getElementById("confirmPassword").value;
+const errorMsg = document.getElementById("errorMsg");
 
-    if (!email || !password || !confirmPassword) {
-      errorMsg.textContent = "All fields are required";
-      errorMsg.classList.remove("hidden");
-      return;
-    }
+errorMsg.classList.add("hidden");
 
-    if (password !== confirmPassword) {
-      errorMsg.textContent = "Passwords do not match";
-      errorMsg.classList.remove("hidden");
-      return;
-    }
+if (!email || !password || !confirmPassword) {
+errorMsg.textContent = "All fields are required";
+errorMsg.classList.remove("hidden");
+return;
+}
 
-    justSignedUp = true;
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (e) {
-      errorMsg.textContent = e.message;
-      errorMsg.classList.remove("hidden");
-    }
-  };
+if (password !== confirmPassword) {
+errorMsg.textContent = "Passwords do not match";
+errorMsg.classList.remove("hidden");
+return;
+}
 
-  // Google signup
-  window.signupWithGoogle = async () => {
-    justSignedUp = true;
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (e) {
-      errorMsg.textContent = e.message;
-      errorMsg.classList.remove("hidden");
-    }
-  };
+if (password.length < 6) {
+errorMsg.textContent = "Password must be at least 6 characters";
+errorMsg.classList.remove("hidden");
+return;
+}
 
-  // Redirect after auth ready
-  onAuthStateChanged(auth, (user) => {
+try {
+      justSignedUp = true;
+await createUserWithEmailAndPassword(auth, email, password);
+      // ⛔ DO NOT redirect here
+      // Firebase needs to finish auth first
+      // redirect handled by auth listener
+} catch (err) {
+errorMsg.textContent = err.message;
+errorMsg.classList.remove("hidden");
+}
+};
+
+  // ✅ AFTER LOGIN IS CONFIRMED → GO HOME
+  // ✅ SAFE AUTH STATE HANDLING
+onAuthStateChanged(auth, (user) => {
+    if (user) {
     if (user && justSignedUp) {
       window.location.href = "index.html";
     }
+
     if (user && !justSignedUp) {
-      window.location.href = "index.html";
-    }
-  });
-</script>
-
-<!-- ================= THEME TOGGLE ================= -->
-<script>
-  const toggle = document.getElementById("themeToggle");
-  const body = document.body;
-  let dark = true;
-
-  toggle.onclick = () => {
-    dark = !dark;
-    body.dataset.theme = dark ? "dark" : "light";
-    toggle.textContent = dark ? "🌙" : "☀️";
-  };
+      // user already logged in → block signup page
+window.location.href = "index.html";
+}
+});
 </script>
 
 </body>
