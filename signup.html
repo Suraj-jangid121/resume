@@ -1,69 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up | ApnaResumeBuilder</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Background glow -->
+  <style>
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
+      z-index: -1;
+    }
+  </style>
 </head>
 
-<body class="bg-black text-white min-h-screen flex items-center justify-center">
+<body class="bg-black text-white min-h-screen flex flex-col">
 
-<div class="w-full max-w-md p-6 border border-gray-700 rounded-xl bg-black/70">
-  <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
+<!-- Header -->
+<header class="border-b border-gray-800 bg-black/70 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-bold">ARB</div>
+      <span class="font-semibold">ApnaResumeBuilder</span>
+    </div>
+    <a href="index.html" class="border border-gray-700 px-4 py-2 rounded-lg hover:bg-gray-800">
+      Home
+    </a>
+  </div>
+</header>
 
-  <!-- Email -->
-  <input id="email" type="email" placeholder="Email"
-    class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
+<!-- Signup Card -->
+<main class="flex-1 flex items-center justify-center px-4">
+  <div class="w-full max-w-md bg-black/60 backdrop-blur border border-gray-700 rounded-2xl p-6">
 
-  <!-- Password -->
-  <input id="password" type="password" placeholder="Password"
-    class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
+    <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
 
-  <!-- Confirm Password -->
-  <input id="confirmPassword" type="password" placeholder="Confirm Password"
-    class="w-full mb-4 p-2 rounded bg-gray-900 border border-gray-700">
+    <input id="email" type="email" placeholder="Email"
+      class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
 
-  <!-- Signup Button -->
-  <button onclick="signup()"
-    class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded font-semibold">
-    Sign Up
-  </button>
+    <!-- Password -->
+    <div class="relative mb-3">
+      <input id="password" type="password" placeholder="Password"
+        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
+      <button type="button" onclick="togglePassword('password', this)"
+        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+    </div>
 
-  <!-- Message -->
-  <p id="errorMsg" class="text-red-500 text-sm text-center mt-3 hidden"></p>
+    <!-- Confirm Password -->
+    <div class="relative mb-4">
+      <input id="confirmPassword" type="password" placeholder="Confirm Password"
+        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700">
+      <button type="button" onclick="togglePassword('confirmPassword', this)"
+        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+    </div>
 
-  <!-- Login link -->
-  <p class="text-sm text-center mt-4 text-gray-400">
-    Already have an account?
-    <a href="login.html" class="text-blue-500 hover:underline">Login</a>
-  </p>
-</div>
+    <p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
+
+    <button onclick="signup()"
+      class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold">
+      Sign Up
+    </button>
+
+    <p class="text-sm text-center mt-4 text-gray-400">
+      Already have an account?
+      <a href="login.html" class="text-blue-500 hover:underline">Login</a>
+    </p>
+  </div>
+</main>
 
 <!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from
+  import { auth } from "./firebase.js";
+  import { createUserWithEmailAndPassword } from
     "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-  // 🔴 Replace with your Firebase config
- const firebaseConfig = {
-  apiKey: "AIzaSyBGALyet-KO-n2je5rBgg5mDWfYyIfaRS0",
-  authDomain: "apnaresumebuilder.firebaseapp.com",
-  projectId: "apnaresumebuilder",
-  storageBucket: "apnaresumebuilder.firebasestorage.app",
-  messagingSenderId: "478270455880",
-  appId: "1:478270455880:web:8a52a65ad267b1277e587d",
-  measurementId: "G-WY6RGH36C8"
-};
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  window.togglePassword = (id, btn) => {
+    const input = document.getElementById(id);
+    if (input.type === "password") {
+      input.type = "text";
+      btn.textContent = "🙈";
+    } else {
+      input.type = "password";
+      btn.textContent = "👁️";
+    }
+  };
 
   window.signup = async () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const email = email.value;
+    const password = password.value;
+    const confirmPassword = confirmPassword.value;
     const errorMsg = document.getElementById("errorMsg");
 
     errorMsg.classList.add("hidden");
