@@ -19,45 +19,54 @@
         radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
       z-index: -1;
     }
+
+    body.light {
+      background-color: white;
+      color: #111827;
+    }
   </style>
 </head>
 
-<body class="bg-black text-white min-h-screen flex flex-col">
+<body class="bg-black text-white min-h-screen flex flex-col transition-colors">
 
 <!-- ================= HEADER ================= -->
-<header class="w-full border-b border-gray-800 bg-black/70 backdrop-blur">
+<header id="header" class="w-full border-b border-gray-800 bg-black/70 backdrop-blur">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
     <!-- Logo -->
     <div class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
+      <div id="logoBox" class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
         ARB
       </div>
       <span class="text-lg font-semibold">ApnaResumeBuilder</span>
     </div>
 
-    <!-- Nav -->
+    <!-- Actions -->
     <div class="flex items-center gap-4">
+      <!-- Theme Toggle -->
+      <button id="themeToggle"
+        class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-700 hover:bg-gray-800">
+        🌙
+      </button>
+
       <a href="index.html"
-        class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition">
+        class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800">
         Home
       </a>
 
       <button onclick="logout()"
-        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition font-semibold">
+        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 font-semibold">
         Logout
       </button>
     </div>
   </div>
 </header>
 
-<!-- ================= PROFILE CARD ================= -->
+<!-- ================= PROFILE ================= -->
 <main class="flex-1 flex items-center justify-center px-4">
   <div class="w-full max-w-lg p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
 
-    <h2 class="text-2xl font-bold text-center mb-6">
-      Your Profile
-    </h2>
+    <h2 class="text-2xl font-bold text-center mb-6">Your Profile</h2>
 
     <!-- Avatar -->
     <div class="flex justify-center mb-6">
@@ -75,11 +84,11 @@
 
       <div class="flex justify-between border-b border-gray-700 pb-2">
         <span class="text-gray-400">User ID</span>
-        <span id="userUid" class="font-medium text-right break-all"></span>
+        <span id="userUid" class="font-medium break-all text-right"></span>
       </div>
 
       <div class="flex justify-between border-b border-gray-700 pb-2">
-        <span class="text-gray-400">Account Provider</span>
+        <span class="text-gray-400">Provider</span>
         <span id="provider" class="font-medium"></span>
       </div>
     </div>
@@ -87,19 +96,19 @@
     <!-- Actions -->
     <div class="mt-8 flex gap-4">
       <a href="index.html"
-        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold transition">
+        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold">
         Build Resume
       </a>
 
-      <a href="#"
-        class="flex-1 text-center border border-gray-600 hover:border-white py-2 rounded-xl transition">
+      <button disabled
+        class="flex-1 text-center border border-gray-600 py-2 rounded-xl opacity-50 cursor-not-allowed">
         Edit Profile
-      </a>
+      </button>
     </div>
   </div>
 </main>
 
-<!-- ================= FIREBASE LOGIC ================= -->
+<!-- ================= FIREBASE ================= -->
 <script type="module">
   import { auth } from "./firebase.js";
   import { onAuthStateChanged, signOut } from
@@ -109,9 +118,9 @@
   const uidEl = document.getElementById("userUid");
   const providerEl = document.getElementById("provider");
 
+  // 🔐 Protect profile page
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // Not logged in → redirect
       window.location.href = "login.html";
       return;
     }
@@ -121,9 +130,32 @@
     providerEl.textContent = user.providerData[0]?.providerId || "password";
   });
 
+  // 🚪 Logout
   window.logout = async () => {
     await signOut(auth);
     window.location.href = "login.html";
+  };
+</script>
+
+<!-- ================= THEME TOGGLE ================= -->
+<script>
+  const toggle = document.getElementById("themeToggle");
+  const body = document.body;
+  const header = document.getElementById("header");
+  const logoBox = document.getElementById("logoBox");
+
+  let dark = true;
+
+  toggle.onclick = () => {
+    dark = !dark;
+    body.className = dark ? "bg-black text-white" : "light";
+    header.className = dark
+      ? "w-full border-b border-gray-800 bg-black/70 backdrop-blur"
+      : "w-full border-b border-gray-300 bg-white/70 backdrop-blur";
+    logoBox.className = dark
+      ? "w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold"
+      : "w-9 h-9 rounded-xl bg-green-600 flex items-center justify-center font-bold";
+    toggle.textContent = dark ? "🌙" : "☀️";
   };
 </script>
 
