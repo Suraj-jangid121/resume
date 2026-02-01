@@ -12,17 +12,28 @@
 <div class="w-full max-w-md p-6 border border-gray-700 rounded-xl bg-black/70">
   <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
 
+  <!-- Email -->
   <input id="email" type="email" placeholder="Email"
     class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
 
+  <!-- Password -->
   <input id="password" type="password" placeholder="Password"
+    class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700">
+
+  <!-- Confirm Password -->
+  <input id="confirmPassword" type="password" placeholder="Confirm Password"
     class="w-full mb-4 p-2 rounded bg-gray-900 border border-gray-700">
 
+  <!-- Signup Button -->
   <button onclick="signup()"
     class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded font-semibold">
     Sign Up
   </button>
 
+  <!-- Message -->
+  <p id="errorMsg" class="text-red-500 text-sm text-center mt-3 hidden"></p>
+
+  <!-- Login link -->
   <p class="text-sm text-center mt-4 text-gray-400">
     Already have an account?
     <a href="login.html" class="text-blue-500 hover:underline">Login</a>
@@ -35,22 +46,46 @@
   import { getAuth, createUserWithEmailAndPassword } from
     "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    appId: "YOUR_APP_ID"
-  };
+  // 🔴 Replace with your Firebase config
+ const firebaseConfig = {
+  apiKey: "AIzaSyBGALyet-KO-n2je5rBgg5mDWfYyIfaRS0",
+  authDomain: "apnaresumebuilder.firebaseapp.com",
+  projectId: "apnaresumebuilder",
+  storageBucket: "apnaresumebuilder.firebasestorage.app",
+  messagingSenderId: "478270455880",
+  appId: "1:478270455880:web:8a52a65ad267b1277e587d",
+  measurementId: "G-WY6RGH36C8"
+};
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
   window.signup = async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const errorMsg = document.getElementById("errorMsg");
+
+    errorMsg.classList.add("hidden");
+
+    if (password !== confirmPassword) {
+      errorMsg.textContent = "Passwords do not match";
+      errorMsg.classList.remove("hidden");
+      return;
+    }
+
+    if (password.length < 6) {
+      errorMsg.textContent = "Password must be at least 6 characters";
+      errorMsg.classList.remove("hidden");
+      return;
+    }
+
     try {
-      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      await createUserWithEmailAndPassword(auth, email, password);
       window.location.href = "index.html";
     } catch (e) {
-      alert(e.message);
+      errorMsg.textContent = e.message;
+      errorMsg.classList.remove("hidden");
     }
   };
 </script>
