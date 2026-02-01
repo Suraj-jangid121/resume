@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | ApnaResumeBuilder</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Background glow -->
+  <style>
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white min-h-screen flex flex-col">
+
+<!-- ================= HEADER ================= -->
+<header class="w-full border-b border-gray-800 bg-black/70 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
+        ARB
+      </div>
+      <span class="text-lg font-semibold">ApnaResumeBuilder</span>
+    </div>
+
+    <!-- Home Button -->
+    <a href="index.html"
+      class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition">
+      Home
+    </a>
+  </div>
+</header>
+
+<!-- ================= LOGIN CARD ================= -->
+<main class="flex-1 flex items-center justify-center px-4">
+  <div class="w-full max-w-md p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
+
+    <h2 class="text-2xl font-bold text-center mb-6">Login to your account</h2>
+
+    <!-- Email -->
+    <input id="email" type="email" placeholder="Email"
+      class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600">
+
+    <!-- Password -->
+    <div class="relative mb-4">
+      <input id="password" type="password" placeholder="Password"
+        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600">
+      <button type="button" onclick="togglePassword('password', this)"
+        class="absolute right-3 top-2.5 text-gray-400">
+        👁️
+      </button>
+    </div>
+
+    <!-- Login button -->
+    <button onclick="login()"
+      class="w-full bg-green-600 hover:bg-green-700 py-2 rounded-xl font-semibold transition">
+      Login
+    </button>
+
+    <!-- Signup link -->
+    <p class="text-sm text-center mt-4 text-gray-400">
+      Don’t have an account?
+      <a href="signup.html" class="text-blue-500 hover:underline">Sign up</a>
+    </p>
+  </div>
+</main>
+
+<!-- ================= FIREBASE ================= -->
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { signInWithEmailAndPassword } from
+    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+  window.togglePassword = (id, btn) => {
+    const input = document.getElementById(id);
+    if (input.type === "password") {
+      input.type = "text";
+      btn.textContent = "🙈";
+    } else {
+      input.type = "password";
+      btn.textContent = "👁️";
+    }
+  };
+
+  window.login = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      window.location.href = "index.html";
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+</script>
+
+</body>
+</html>
