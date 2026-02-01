@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile | ApnaResumeBuilder</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Background glow -->
+  <style>
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
+      z-index: -1;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white min-h-screen flex flex-col">
+
+<!-- ================= HEADER ================= -->
+<header class="w-full border-b border-gray-800 bg-black/70 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
+        ARB
+      </div>
+      <span class="text-lg font-semibold">ApnaResumeBuilder</span>
+    </div>
+
+    <!-- Nav -->
+    <div class="flex items-center gap-4">
+      <a href="index.html"
+        class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition">
+        Home
+      </a>
+
+      <button onclick="logout()"
+        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition font-semibold">
+        Logout
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= PROFILE CARD ================= -->
+<main class="flex-1 flex items-center justify-center px-4">
+  <div class="w-full max-w-lg p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
+
+    <h2 class="text-2xl font-bold text-center mb-6">
+      Your Profile
+    </h2>
+
+    <!-- Avatar -->
+    <div class="flex justify-center mb-6">
+      <div class="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-3xl font-bold">
+        👤
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="space-y-4 text-sm">
+      <div class="flex justify-between border-b border-gray-700 pb-2">
+        <span class="text-gray-400">Email</span>
+        <span id="userEmail" class="font-medium"></span>
+      </div>
+
+      <div class="flex justify-between border-b border-gray-700 pb-2">
+        <span class="text-gray-400">User ID</span>
+        <span id="userUid" class="font-medium text-right break-all"></span>
+      </div>
+
+      <div class="flex justify-between border-b border-gray-700 pb-2">
+        <span class="text-gray-400">Account Provider</span>
+        <span id="provider" class="font-medium"></span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-8 flex gap-4">
+      <a href="index.html"
+        class="flex-1 text-center bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold transition">
+        Build Resume
+      </a>
+
+      <a href="#"
+        class="flex-1 text-center border border-gray-600 hover:border-white py-2 rounded-xl transition">
+        Edit Profile
+      </a>
+    </div>
+  </div>
+</main>
+
+<!-- ================= FIREBASE LOGIC ================= -->
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged, signOut } from
+    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+  const emailEl = document.getElementById("userEmail");
+  const uidEl = document.getElementById("userUid");
+  const providerEl = document.getElementById("provider");
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Not logged in → redirect
+      window.location.href = "login.html";
+      return;
+    }
+
+    emailEl.textContent = user.email;
+    uidEl.textContent = user.uid;
+    providerEl.textContent = user.providerData[0]?.providerId || "password";
+  });
+
+  window.logout = async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+  };
+</script>
+
+</body>
+</html>
