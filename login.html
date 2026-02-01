@@ -1,132 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | ApnaResumeBuilder</title>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Background glow -->
-  <style>
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
-        radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
-      z-index: -1;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | ApnaResumeBuilder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { transition: background-color 0.4s ease, color 0.4s ease; }
+        .bg-glow { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+        .light .bg-glow { background: radial-gradient(circle at 0% 0%, #ffffff 0%, #f0fdf4 100%); }
+        .dark .bg-glow { background: radial-gradient(circle at 0% 0%, #000000 0%, #05140a 100%); }
+        .blob { position: absolute; width: 500px; height: 500px; border-radius: 50%; filter: blur(80px); animation: move 20s infinite alternate ease-in-out; background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, transparent 70%); }
+        @keyframes move { 0% { transform: translate(-10%, -10%); } 100% { transform: translate(20%, 20%); } }
+        .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .light .glass { background: rgba(255, 255, 255, 0.75); border: 1px solid rgba(22, 101, 52, 0.2); }
+        .dark .glass { background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(34, 197, 94, 0.15); }
+    </style>
 </head>
+<body class="min-h-screen flex flex-col text-black dark:text-white">
+    <div class="bg-glow"><div class="blob"></div></div>
 
-<body class="bg-black text-white min-h-screen flex flex-col">
+    <header class="border-b border-green-100 dark:border-green-900/30 bg-white/40 dark:bg-black/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center font-bold text-white shadow-lg">ARB</div>
+                <span class="font-bold text-xl tracking-tight">ApnaResumeBuilder</span>
+            </div>
+            <a href="index.html" class="px-5 py-2 rounded-xl border border-green-200 dark:border-green-800 font-medium hover:bg-green-50 dark:hover:bg-green-900/30 transition-all">Home</a>
+        </div>
+    </header>
 
-<!-- ================= HEADER ================= -->
-<header class="w-full border-b border-gray-800 bg-black/70 backdrop-blur">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md p-10 rounded-[2.5rem] glass shadow-2xl">
+            <h2 class="text-3xl font-black text-center mb-2 text-green-700 dark:text-green-400">Welcome Back</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-center mb-8 font-medium">Log in to your account.</p>
 
-    <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
-        ARB
-      </div>
-      <span class="text-lg font-semibold">ApnaResumeBuilder</span>
-    </div>
+            <div class="space-y-4">
+                <input id="email" type="email" placeholder="Email Address" class="w-full p-4 rounded-2xl bg-white/80 dark:bg-black/40 border border-green-100 dark:border-green-900/50 focus:ring-4 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all">
+                
+                <div class="relative">
+                    <input id="password" type="password" placeholder="Password" class="w-full p-4 pr-12 rounded-2xl bg-white/80 dark:bg-black/40 border border-green-100 dark:border-green-900/50 focus:ring-4 focus:ring-green-500/20 focus:border-green-500 outline-none">
+                    <button type="button" onclick="togglePassword('password', this)" class="absolute right-4 top-1/2 -translate-y-1/2 opacity-60 text-xl">👁️</button>
+                </div>
 
-    <!-- Home Button -->
-    <a href="index.html"
-      class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800 transition">
-      Home
-    </a>
-  </div>
-</header>
+                <p id="errorMsg" class="hidden text-red-500 text-sm text-center font-bold"></p>
 
-<!-- ================= LOGIN CARD ================= -->
-<main class="flex-1 flex items-center justify-center px-4">
-  <div class="w-full max-w-md p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
+                <button onclick="login()" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl font-bold transition-all transform hover:scale-[1.01] active:scale-95 shadow-xl shadow-green-500/20">Log In</button>
 
-    <h2 class="text-2xl font-bold text-center mb-6">Login to your account</h2>
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-green-100 dark:border-green-900/30"></div>
+                    <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-widest">Or</span>
+                    <div class="flex-grow border-t border-green-100 dark:border-green-900/30"></div>
+                </div>
 
-    <!-- Email -->
-    <input id="email" type="email" placeholder="Email"
-      class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600">
+                <button onclick="googleSignIn()" class="w-full flex items-center justify-center gap-3 bg-white dark:bg-zinc-900 border border-green-200 dark:border-green-900 py-4 rounded-2xl font-bold hover:bg-green-50 dark:hover:bg-zinc-800 transition-all shadow-sm">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google"> Continue with Google
+                </button>
+            </div>
+            <p class="text-sm text-center mt-8 text-gray-500">Don't have an account? <a href="signup.html" class="text-green-700 dark:text-green-400 font-bold hover:underline">Sign Up</a></p>
+        </div>
+    </main>
 
-    <!-- Password -->
-    <div class="relative mb-4">
-      <input id="password" type="password" placeholder="Password"
-        class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600">
-      <button type="button" onclick="togglePassword('password', this)"
-        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
-    </div>
+    <script type="module">
+        import { auth } from "./firebase.js";
+        import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        const provider = new GoogleAuthProvider();
 
-    <p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
+        window.togglePassword = (id, btn) => {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+            btn.textContent = input.type === "password" ? "👁️" : "🙈";
+        };
 
-    <!-- Login button -->
-    <button onclick="login()"
-      class="w-full bg-green-600 hover:bg-green-700 py-2 rounded-xl font-semibold transition">
-      Login
-    </button>
+        window.login = async () => {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const errorMsg = document.getElementById("errorMsg");
+            errorMsg.classList.add("hidden");
 
-    <!-- Signup link -->
-    <p class="text-sm text-center mt-4 text-gray-400">
-      Don’t have an account?
-      <a href="signup.html" class="text-blue-500 hover:underline">Sign up</a>
-    </p>
-  </div>
-</main>
+            try { await signInWithEmailAndPassword(auth, email, password); } 
+            catch (err) { errorMsg.textContent = "Invalid credentials"; errorMsg.classList.remove("hidden"); }
+        };
 
-<!-- ================= FIREBASE LOGIC ================= -->
-<script type="module">
-  import { auth } from "./firebase.js";
-  import {
-    signInWithEmailAndPassword,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+        window.googleSignIn = async () => {
+            try { await signInWithPopup(auth, provider); } catch (err) { console.error(err); }
+        };
 
-  let justLoggedIn = false;
-
-  // 👁️ Toggle password visibility
-  window.togglePassword = (id, btn) => {
-    const input = document.getElementById(id);
-    if (input.type === "password") {
-      input.type = "text";
-      btn.textContent = "🙈";
-    } else {
-      input.type = "password";
-      btn.textContent = "👁️";
-    }
-  };
-
-  // 🔐 LOGIN FUNCTION
-  window.login = async () => {
-    const errorMsg = document.getElementById("errorMsg");
-    errorMsg.classList.add("hidden");
-
-    try {
-      justLoggedIn = true;
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      // redirect handled below
-    } catch (e) {
-      errorMsg.textContent = e.message;
-      errorMsg.classList.remove("hidden");
-    }
-  };
-
-  // ✅ AUTH STATE HANDLING (SAFE)
-  onAuthStateChanged(auth, (user) => {
-    if (user && justLoggedIn) {
-      window.location.href = "index.html";
-    }
-
-    if (user && !justLoggedIn) {
-      // already logged in → block login page
-      window.location.href = "index.html";
-    }
-  });
-</script>
-
+        onAuthStateChanged(auth, (user) => { if (user) window.location.href = "index.html"; });
+    </script>
 </body>
 </html>
