@@ -59,10 +59,10 @@
       <input id="password" type="password" placeholder="Password"
         class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600">
       <button type="button" onclick="togglePassword('password', this)"
-        class="absolute right-3 top-2.5 text-gray-400">
-        👁️
-      </button>
+        class="absolute right-3 top-2.5 text-gray-400">👁️</button>
     </div>
+
+    <p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
 
     <!-- Login button -->
     <button onclick="login()"
@@ -78,12 +78,17 @@
   </div>
 </main>
 
-<!-- ================= FIREBASE ================= -->
+<!-- ================= FIREBASE LOGIC ================= -->
 <script type="module">
   import { auth } from "./firebase.js";
-  import { signInWithEmailAndPassword } from
-    "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+  import {
+    signInWithEmailAndPassword,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
+  let justLoggedIn = false;
+
+  // 👁️ Toggle password visibility
   window.togglePassword = (id, btn) => {
     const input = document.getElementById(id);
     if (input.type === "password") {
@@ -95,14 +100,32 @@
     }
   };
 
+  // 🔐 LOGIN FUNCTION
   window.login = async () => {
+    const errorMsg = document.getElementById("errorMsg");
+    errorMsg.classList.add("hidden");
+
     try {
+      justLoggedIn = true;
       await signInWithEmailAndPassword(auth, email.value, password.value);
-      window.location.href = "index.html";
+      // redirect handled below
     } catch (e) {
-      alert(e.message);
+      errorMsg.textContent = e.message;
+      errorMsg.classList.remove("hidden");
     }
   };
+
+  // ✅ AUTH STATE HANDLING (SAFE)
+  onAuthStateChanged(auth, (user) => {
+    if (user && justLoggedIn) {
+      window.location.href = "index.html";
+    }
+
+    if (user && !justLoggedIn) {
+      // already logged in → block login page
+      window.location.href = "index.html";
+    }
+  });
 </script>
 
 </body>
