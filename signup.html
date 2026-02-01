@@ -86,6 +86,8 @@
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
+  let justSignedUp = false;
+
   // 👁️ Toggle password visibility
   window.togglePassword = (id, btn) => {
     const input = document.getElementById(id);
@@ -126,18 +128,23 @@
     }
 
     try {
+      justSignedUp = true;
       await createUserWithEmailAndPassword(auth, email, password);
-      // ⛔ DO NOT redirect here
-      // Firebase needs to finish auth first
+      // redirect handled by auth listener
     } catch (err) {
       errorMsg.textContent = err.message;
       errorMsg.classList.remove("hidden");
     }
   };
 
-  // ✅ AFTER LOGIN IS CONFIRMED → GO HOME
+  // ✅ SAFE AUTH STATE HANDLING
   onAuthStateChanged(auth, (user) => {
-    if (user) {
+    if (user && justSignedUp) {
+      window.location.href = "index.html";
+    }
+
+    if (user && !justSignedUp) {
+      // user already logged in → block signup page
       window.location.href = "index.html";
     }
   });
