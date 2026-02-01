@@ -1,139 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up | ApnaResumeBuilder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body::before {
-            content: "";
+        /* Modern Animated Background */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .bg-glow {
             position: fixed;
-            inset: 0;
-            background: 
-                radial-gradient(circle at top left, rgba(37,99,235,0.25), transparent 40%),
-                radial-gradient(circle at bottom right, rgba(34,197,94,0.25), transparent 40%);
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
+            overflow: hidden;
+            background: #000; /* Default Dark */
+        }
+        .light .bg-glow { background: #f8fafc; }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: move 20s infinite alternate;
+        }
+        .blob-2 {
+            right: 0; bottom: 0;
+            background: radial-gradient(circle, rgba(34,197,94,0.2) 0%, transparent 70%);
+            animation-delay: -10s;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-10%, -10%); }
+            100% { transform: translate(20%, 20%); }
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .light .glass {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 
-<body class="bg-black text-white min-h-screen flex flex-col">
+<body class="text-slate-900 dark:text-white min-h-screen flex flex-col transition-all">
+    <div class="bg-glow">
+        <div class="blob"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
-    <header class="border-b border-gray-800 bg-black/70 backdrop-blur">
+    <header class="border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/50 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold">
+                <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">
                     ARB
                 </div>
-                <span class="font-semibold">ApnaResumeBuilder</span>
+                <span class="font-bold text-xl tracking-tight">ApnaResumeBuilder</span>
             </div>
-            <a href="index.html" class="px-4 py-2 rounded-lg border border-gray-700 hover:bg-gray-800">
-                Home
-            </a>
+            
+            <div class="flex items-center gap-4">
+                <button id="themeToggle" class="p-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <a href="index.html" class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    Home
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="flex-1 flex items-center justify-center px-4">
-        <div class="w-full max-w-md p-6 rounded-2xl border border-gray-700 bg-black/60 backdrop-blur">
-            <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
+    <main class="flex-1 flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md p-8 rounded-3xl glass">
+            <h2 class="text-3xl font-extrabold text-center mb-2">Join Us</h2>
+            <p class="text-gray-500 dark:text-gray-400 text-center mb-8">Start building your career today.</p>
 
-            <input id="email" type="email" placeholder="Email"
-                class="w-full mb-3 p-2 rounded bg-gray-900 border border-gray-700 outline-none focus:border-blue-500">
+            <div class="space-y-4">
+                <input id="email" type="email" placeholder="Email Address"
+                    class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
 
-            <div class="relative mb-3">
-                <input id="password" type="password" placeholder="Password"
-                    class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700 outline-none focus:border-blue-500">
-                <button type="button" onclick="togglePassword('password', this)"
-                    class="absolute right-3 top-2.5 text-gray-400">👁️</button>
+                <div class="relative">
+                    <input id="password" type="password" placeholder="Password"
+                        class="w-full p-3 pr-10 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <button type="button" onclick="togglePassword('password', this)" class="absolute right-3 top-3.5 opacity-50">👁️</button>
+                </div>
+
+                <div class="relative">
+                    <input id="confirmPassword" type="password" placeholder="Confirm Password"
+                        class="w-full p-3 pr-10 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <button type="button" onclick="togglePassword('confirmPassword', this)" class="absolute right-3 top-3.5 opacity-50">👁️</button>
+                </div>
+
+                <p id="errorMsg" class="hidden text-red-500 text-sm text-center"></p>
+
+                <button onclick="signup()"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-blue-500/20">
+                    Sign Up
+                </button>
+
+                <div class="relative flex py-3 items-center">
+                    <div class="flex-grow border-t border-gray-200 dark:border-gray-800"></div>
+                    <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase">Or continue with</span>
+                    <div class="flex-grow border-t border-gray-200 dark:border-gray-800"></div>
+                </div>
+
+                <button onclick="googleSignIn()"
+                    class="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 py-3 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google">
+                    Google
+                </button>
             </div>
 
-            <div class="relative mb-4">
-                <input id="confirmPassword" type="password" placeholder="Confirm Password"
-                    class="w-full p-2 pr-10 rounded bg-gray-900 border border-gray-700 outline-none focus:border-blue-500">
-                <button type="button" onclick="togglePassword('confirmPassword', this)"
-                    class="absolute right-3 top-2.5 text-gray-400">👁️</button>
-            </div>
-
-            <p id="errorMsg" class="hidden text-red-500 text-sm mb-3 text-center"></p>
-
-            <button onclick="signup()"
-                class="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-xl font-semibold transition-colors">
-                Sign Up
-            </button>
-
-            <p class="text-sm text-center mt-4 text-gray-400">
-                Already have an account?
-                <a href="login.html" class="text-blue-500 hover:underline">Login</a>
+            <p class="text-sm text-center mt-6 text-gray-500">
+                Already have an account? 
+                <a href="login.html" class="text-blue-500 font-semibold hover:underline">Login</a>
             </p>
         </div>
     </main>
 
     <script type="module">
         import { auth } from "./firebase.js";
-        import {
-            createUserWithEmailAndPassword,
-            onAuthStateChanged
+        import { 
+            createUserWithEmailAndPassword, 
+            signInWithPopup, 
+            GoogleAuthProvider,
+            onAuthStateChanged 
         } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
-        let justSignedUp = false;
+        const provider = new GoogleAuthProvider();
 
-        // 👁️ Toggle password visibility
-        window.togglePassword = (id, btn) => {
-            const input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-                btn.textContent = "🙈";
+        // 🌗 THEME TOGGLE LOGIC
+        const themeBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Load saved theme
+        if (localStorage.theme === 'light') {
+            html.classList.remove('dark');
+            html.classList.add('light');
+            themeIcon.textContent = '☀️';
+        }
+
+        themeBtn.onclick = () => {
+            if (html.classList.contains('dark')) {
+                html.classList.replace('dark', 'light');
+                themeIcon.textContent = '☀️';
+                localStorage.theme = 'light';
             } else {
-                input.type = "password";
-                btn.textContent = "👁️";
+                html.classList.replace('light', 'dark');
+                themeIcon.textContent = '🌙';
+                localStorage.theme = 'dark';
             }
         };
 
-        // 🔐 SIGNUP FUNCTION
+        // 👁️ Toggle password
+        window.togglePassword = (id, btn) => {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+            btn.textContent = input.type === "password" ? "👁️" : "🙈";
+        };
+
+        // 🔐 EMAIL/PASSWORD SIGNUP
         window.signup = async () => {
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+            const confirm = document.getElementById("confirmPassword").value;
             const errorMsg = document.getElementById("errorMsg");
 
             errorMsg.classList.add("hidden");
 
-            if (!email || !password || !confirmPassword) {
-                errorMsg.textContent = "All fields are required";
-                errorMsg.classList.remove("hidden");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                errorMsg.textContent = "Passwords do not match";
-                errorMsg.classList.remove("hidden");
-                return;
-            }
-
-            if (password.length < 6) {
-                errorMsg.textContent = "Password must be at least 6 characters";
+            if (!email || !password || password !== confirm) {
+                errorMsg.textContent = "Please check your inputs";
                 errorMsg.classList.remove("hidden");
                 return;
             }
 
             try {
-                justSignedUp = true;
                 await createUserWithEmailAndPassword(auth, email, password);
-                // Redirect is handled by onAuthStateChanged
             } catch (err) {
-                justSignedUp = false; // Reset if error occurs
                 errorMsg.textContent = err.message;
                 errorMsg.classList.remove("hidden");
             }
         };
 
-        // ✅ REDIRECT LOGIC
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // If user is logged in (either just now or previously), send to home
-                window.location.href = "index.html";
+        // 🌐 GOOGLE SIGN IN
+        window.googleSignIn = async () => {
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (err) {
+                console.error(err);
+                alert("Google Sign-In failed: " + err.message);
             }
+        };
+
+        // 🔄 AUTH LISTENER
+        onAuthStateChanged(auth, (user) => {
+            if (user) window.location.href = "index.html";
         });
     </script>
 </body>
