@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact Us - ApnaResumeBuilder</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background-color: #0a0a0a;
@@ -18,11 +14,7 @@
     }
 
     /* HOME BUTTON */
-    .top-bar {
-      padding: 15px 40px;
-      border-bottom: 1px solid #222;
-    }
-
+    .top-bar { padding: 15px 40px; border-bottom: 1px solid #222; }
     .home-btn {
       background-color: #2563eb;
       color: white;
@@ -37,94 +29,34 @@
       align-items: center;
       gap: 6px;
     }
-
-    .home-btn:hover {
-      background-color: #1d4ed8;
-    }
+    .home-btn:hover { background-color: #1d4ed8; }
 
     /* PAGE CONTENT */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 40px;
-    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
 
     /* Page heading */
-    .page-heading {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .page-heading h1 {
-      font-size: 42px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .page-heading h1 span {
-      color: #2563eb;
-    }
-
-    .page-heading p {
-      color: #aaa;
-      font-size: 16px;
-    }
+    .page-heading { text-align: center; margin-bottom: 50px; }
+    .page-heading h1 { font-size: 42px; font-weight: bold; margin-bottom: 12px; }
+    .page-heading h1 span { color: #2563eb; }
+    .page-heading p { color: #aaa; font-size: 16px; }
 
     /* CONTACT LAYOUT */
-    .contact-layout {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
+    .contact-layout { display: flex; gap: 40px; align-items: flex-start; }
 
     /* Left side info */
-    .contact-info {
-      flex: 1;
-    }
-
-    .contact-info h2 {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .contact-info > p {
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
-
-    .info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
+    .contact-info { flex: 1; }
+    .contact-info h2 { font-size: 22px; font-weight: bold; margin-bottom: 8px; }
+    .contact-info > p { color: #aaa; font-size: 14px; line-height: 1.6; margin-bottom: 30px; }
+    .info-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px; }
     .info-icon {
       background-color: #2563eb;
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
     }
-
-    .info-text h4 {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
-    .info-text p {
-      color: #aaa;
-      font-size: 13px;
-      margin-bottom: 0;
-    }
+    .info-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .info-text p { color: #aaa; font-size: 13px; margin-bottom: 0; }
 
     /* Right side form */
     .contact-form {
@@ -134,37 +66,18 @@
       border-radius: 12px;
       padding: 35px;
     }
+    .contact-form h2 { font-size: 20px; font-weight: bold; margin-bottom: 6px; }
+    .contact-form > div > p { color: #aaa; font-size: 13px; margin-bottom: 20px; }
 
-    .contact-form h2 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    .contact-form > div > p {
-      color: #aaa;
-      font-size: 13px;
-      margin-bottom: 25px;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
+    .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
 
     .form-group {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
     }
-
-    .form-group label {
-      font-size: 13px;
-      color: #ccc;
-      font-weight: 500;
-    }
+    .form-group label { font-size: 13px; color: #ccc; font-weight: 500; }
 
     .form-group input,
     .form-group textarea,
@@ -178,31 +91,46 @@
       outline: none;
       width: 100%;
       font-family: Arial, sans-serif;
+      transition: border-color 0.2s;
     }
-
     .form-group input:focus,
     .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: #2563eb;
-    }
-
+    .form-group select:focus { border-color: #2563eb; }
     .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #555;
-    }
+    .form-group textarea::placeholder { color: #555; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-group select option { background: #1a1a1a; }
 
-    .form-group textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
+    /* ✅ AJAX 1: Validation border colors */
+    .form-group input.valid,
+    .form-group textarea.valid { border-color: #16a34a; }
+    .form-group input.invalid,
+    .form-group textarea.invalid { border-color: #dc2626; }
 
-    .form-group select option {
-      background: #1a1a1a;
-    }
+    /* ✅ AJAX 1: Field hint messages */
+    .field-hint { font-size: 11px; min-height: 15px; }
+    .field-hint.error  { color: #f87171; }
+    .field-hint.success{ color: #4ade80; }
 
-    .full-width {
-      margin-bottom: 16px;
-    }
+    /* ✅ AJAX 2: Email duplicate status */
+    .email-status { font-size: 11px; min-height: 15px; }
+    .email-status.checking  { color: #888; }
+    .email-status.duplicate { color: #f87171; }
+    .email-status.clear     { color: #4ade80; }
+
+    /* ✅ AJAX 3: Topic auto-suggest */
+    .topic-suggestion { font-size: 11px; color: #60a5fa; min-height: 15px; cursor: pointer; }
+
+    /* ✅ AJAX 4: Character counter */
+    .char-counter { font-size: 11px; color: #555; text-align: right; }
+    .char-counter.warning { color: #f59e0b; }
+    .char-counter.limit   { color: #f87171; }
+
+    /* ✅ AJAX 7: Draft saved indicator */
+    .draft-indicator { font-size: 11px; color: #555; text-align: right; margin-bottom: 8px; min-height: 15px; }
+    .draft-indicator.saved { color: #4ade80; }
+
+    .full-width { margin-bottom: 16px; }
 
     .submit-btn {
       width: 100%;
@@ -217,16 +145,8 @@
       margin-top: 8px;
       transition: background 0.2s;
     }
-
-    .submit-btn:hover:not(:disabled) {
-      background-color: #1d4ed8;
-    }
-
-    .submit-btn:disabled {
-      background-color: #1e3a6e;
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
+    .submit-btn:hover:not(:disabled) { background-color: #1d4ed8; }
+    .submit-btn:disabled { background-color: #1e3a6e; cursor: not-allowed; opacity: 0.7; }
 
     /* Error message */
     .error-msg {
@@ -241,28 +161,10 @@
     }
 
     /* Success message */
-    .success-box {
-      display: none;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .success-box .check {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .success-box h3 {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    .success-box p {
-      color: #aaa;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-
+    .success-box { display: none; text-align: center; padding: 40px 20px; }
+    .success-box .check { font-size: 48px; margin-bottom: 16px; }
+    .success-box h3 { font-size: 20px; margin-bottom: 8px; }
+    .success-box p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
     .back-btn {
       background: transparent;
       border: 1px solid #2563eb;
@@ -272,28 +174,13 @@
       font-size: 14px;
       cursor: pointer;
     }
-
-    .back-btn:hover {
-      background-color: rgba(37, 99, 235, 0.1);
-    }
+    .back-btn:hover { background-color: rgba(37, 99, 235, 0.1); }
 
     /* FAQ section */
-    .faq-section {
-      margin-top: 70px;
-    }
-
-    .faq-section h2 {
-      font-size: 26px;
-      font-weight: bold;
-      margin-bottom: 25px;
-    }
-
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    .faq-section { margin-top: 70px; }
+    .faq-section h2 { font-size: 26px; font-weight: bold; margin-bottom: 25px; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    .faq-loading { color: #555; font-size: 14px; padding: 10px 0; }
     .faq-item {
       background-color: #111;
       border: 1px solid #222;
@@ -301,36 +188,11 @@
       padding: 18px 20px;
       cursor: pointer;
     }
-
-    .faq-question {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .faq-arrow {
-      font-size: 18px;
-      color: #2563eb;
-      transition: transform 0.2s;
-    }
-
-    .faq-answer {
-      color: #aaa;
-      font-size: 13px;
-      margin-top: 10px;
-      line-height: 1.6;
-      display: none;
-    }
-
-    .faq-item.open .faq-answer {
-      display: block;
-    }
-
-    .faq-item.open .faq-arrow {
-      transform: rotate(180deg);
-    }
+    .faq-question { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 500; }
+    .faq-arrow { font-size: 18px; color: #2563eb; transition: transform 0.2s; }
+    .faq-answer { color: #aaa; font-size: 13px; margin-top: 10px; line-height: 1.6; display: none; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
 
     /* Footer */
     footer {
@@ -416,49 +278,67 @@
 
       <!-- Right: Form -->
       <div class="contact-form">
-
-        <!-- Form area -->
         <div id="formArea">
           <h2>Send a Message</h2>
           <p>Fill out the form below and we'll get back to you soon.</p>
 
+          <!-- ✅ AJAX 7: Draft saved indicator -->
+          <div class="draft-indicator" id="draftIndicator"></div>
+
           <div class="form-row">
             <div class="form-group">
               <label>First Name</label>
-              <input type="text" id="fname" placeholder="First Name" />
+              <input type="text" id="fname" placeholder="First Name"
+                     oninput="validateField('fname')" />
+              <span class="field-hint" id="fnameHint"></span>
             </div>
             <div class="form-group">
               <label>Last Name</label>
-              <input type="text" id="lname" placeholder="Last name" />
+              <input type="text" id="lname" placeholder="Last name"
+                     oninput="saveDraftNow()" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Email Address</label>
-              <input type="email" id="email" placeholder="Enter your Email" />
+              <!-- ✅ AJAX 2: onblur triggers duplicate check -->
+              <input type="email" id="email" placeholder="Enter your Email"
+                     oninput="validateField('email')"
+                     onblur="checkDuplicateEmail()" />
+              <span class="field-hint" id="emailHint"></span>
+              <span class="email-status" id="emailStatus"></span>
             </div>
             <div class="form-group">
               <label>Phone (optional)</label>
-              <input type="tel" id="phone" placeholder="Mobile Number" />
+              <input type="tel" id="phone" placeholder="Mobile Number"
+                     oninput="saveDraftNow()" />
             </div>
           </div>
 
           <div class="form-group full-width">
             <label>Topic</label>
-            <select id="topic">
+            <!-- ✅ AJAX 3: auto-suggest will update this dropdown -->
+            <select id="topic" onchange="saveDraftNow()">
               <option value="" disabled selected>Choose a topic...</option>
-              <option>Account &amp; Billing</option>
-              <option>Resume Templates</option>
-              <option>Technical Issue</option>
-              <option>Feature Request</option>
-              <option>Other</option>
+              <option value="Account & Billing">Account &amp; Billing</option>
+              <option value="Resume Templates">Resume Templates</option>
+              <option value="Technical Issue">Technical Issue</option>
+              <option value="Feature Request">Feature Request</option>
+              <option value="Other">Other</option>
             </select>
+            <!-- ✅ AJAX 3: suggestion shown here -->
+            <span class="topic-suggestion" id="topicSuggestion"></span>
           </div>
 
           <div class="form-group full-width">
             <label>Your Message</label>
-            <textarea id="msg" placeholder="Tell us how we can help..."></textarea>
+            <!-- ✅ AJAX 3 + 4: auto-suggest topic & live char counter -->
+            <textarea id="msg" placeholder="Tell us how we can help..."
+                      maxlength="500"
+                      oninput="onMessageInput()"></textarea>
+            <!-- ✅ AJAX 4: character counter -->
+            <div class="char-counter" id="charCounter">0 / 500 characters</div>
           </div>
 
           <!-- Error message (shown if Firebase fails) -->
@@ -478,47 +358,14 @@
           <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
           <button class="back-btn" onclick="resetForm()">Send Another Message</button>
         </div>
-
       </div>
     </div>
 
-    <!-- FAQ Section -->
+    <!-- ✅ AJAX 8: FAQs loaded dynamically -->
     <div class="faq-section">
       <h2>Frequently Asked Questions</h2>
-      <div class="faq-list">
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <div class="faq-question">
-            How do I cancel my subscription?
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">You can cancel anytime from Account Settings → Billing. No cancellation fees apply and you keep access until the end of your billing period.</div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <div class="faq-question">
-            Can I download my resume as PDF?
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">Yes! You can download your resume as a PDF for free. Word (.docx) export is available on Pro plans.</div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <div class="faq-question">
-            Is ApnaResumeBuilder really free?
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">Yes, our basic plan is completely free. You can build and download your resume without paying anything. We also offer Pro plans with extra templates and features.</div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <div class="faq-question">
-            How does the AI writing help work?
-            <span class="faq-arrow">▼</span>
-          </div>
-          <div class="faq-answer">Our AI suggests professional phrases and bullet points based on your job title and experience. It helps you write stronger descriptions that get noticed by recruiters.</div>
-        </div>
-
+      <div class="faq-list" id="faqList">
+        <p class="faq-loading">Loading FAQs...</p>
       </div>
     </div>
 
@@ -529,12 +376,20 @@
     © 2024 ApnaResumeBuilder. All rights reserved.
   </footer>
 
-  <!-- ✅ FIREBASE INTEGRATION -->
+  <!-- ✅ FIREBASE + AJAX FEATURES -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      where,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-    // 🔐 Your Firebase config
+    // 🔐 Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBGALyet-KO-n2je5rBgg5mDWfYyIfaRS0",
       authDomain: "apnaresumebuilder.firebaseapp.com",
@@ -544,34 +399,257 @@
       appId: "1:478270455880:web:8a52a65ad267b1277e587d"
     };
 
-    // 🚀 Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db  = getFirestore(app);
 
-    // 📤 Submit form and save to Firestore
-    window.submitForm = async function () {
-      var fname = document.getElementById('fname').value.trim();
-      var email = document.getElementById('email').value.trim();
-      var msg   = document.getElementById('msg').value.trim();
-      var errorMsg = document.getElementById('errorMsg');
+    // ─────────────────────────────────────────
+    // ✅ AJAX 1: Real-time field validation
+    // ─────────────────────────────────────────
+    window.validateField = function(fieldId) {
+      var input = document.getElementById(fieldId);
+      var hint  = document.getElementById(fieldId + 'Hint');
+      var val   = input.value.trim();
+
+      if (fieldId === 'fname') {
+        if (val.length === 0) {
+          input.className = '';
+          hint.textContent = '';
+          hint.className = 'field-hint';
+        } else if (val.length < 2) {
+          input.className = 'invalid';
+          hint.textContent = '❌ Name must be at least 2 characters';
+          hint.className = 'field-hint error';
+        } else {
+          input.className = 'valid';
+          hint.textContent = '✓ Looks good!';
+          hint.className = 'field-hint success';
+        }
+      }
+
+      if (fieldId === 'email') {
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (val.length === 0) {
+          input.className = '';
+          hint.textContent = '';
+          hint.className = 'field-hint';
+          document.getElementById('emailStatus').textContent = '';
+        } else if (!emailRegex.test(val)) {
+          input.className = 'invalid';
+          hint.textContent = '❌ Please enter a valid email address';
+          hint.className = 'field-hint error';
+        } else {
+          input.className = 'valid';
+          hint.textContent = '✓ Valid email';
+          hint.className = 'field-hint success';
+        }
+      }
+
+      saveDraftNow();
+    };
+
+    // ─────────────────────────────────────────
+    // ✅ AJAX 2: Duplicate email check (onblur)
+    // ─────────────────────────────────────────
+    window.checkDuplicateEmail = async function() {
+      var email  = document.getElementById('email').value.trim();
+      var status = document.getElementById('emailStatus');
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email || !emailRegex.test(email)) return;
+
+      status.textContent = '🔍 Checking...';
+      status.className = 'email-status checking';
+
+      try {
+        var q = query(
+          collection(db, 'contact_submissions'),
+          where('email', '==', email)
+        );
+        var snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          status.textContent = '⚠️ We already have a message from this email. We\'ll get back to you soon!';
+          status.className = 'email-status duplicate';
+        } else {
+          status.textContent = '✓ All good — first time hearing from you!';
+          status.className = 'email-status clear';
+        }
+      } catch (e) {
+        status.textContent = '';
+      }
+    };
+
+    // ─────────────────────────────────────────
+    // ✅ AJAX 3: Auto-suggest topic from message
+    // ─────────────────────────────────────────
+    var topicKeywords = {
+      'Account & Billing' : ['payment','billing','invoice','subscription','charge','refund','plan','price','paid','cancel'],
+      'Resume Templates'  : ['template','design','layout','color','font','style','format','theme'],
+      'Technical Issue'   : ['error','bug','broken','crash','not working','issue','problem','fix','fail','slow'],
+      'Feature Request'   : ['feature','add','suggestion','improve','want','wish','would be nice','request']
+    };
+
+    function suggestTopic(message) {
+      var msg = message.toLowerCase();
+      for (var topic in topicKeywords) {
+        var keywords = topicKeywords[topic];
+        for (var i = 0; i < keywords.length; i++) {
+          if (msg.includes(keywords[i])) return topic;
+        }
+      }
+      return null;
+    }
+
+    // ─────────────────────────────────────────
+    // ✅ AJAX 4: Live character counter
+    // ─────────────────────────────────────────
+    window.onMessageInput = function() {
+      var msgEl      = document.getElementById('msg');
+      var counter    = document.getElementById('charCounter');
+      var suggestion = document.getElementById('topicSuggestion');
+      var topicSelect= document.getElementById('topic');
+      var len = msgEl.value.length;
+
+      // Update counter
+      counter.textContent = len + ' / 500 characters';
+      counter.className = 'char-counter';
+      if (len > 400) counter.className = 'char-counter warning';
+      if (len >= 500) counter.className = 'char-counter limit';
+
+      // Auto-suggest topic only if user hasn't picked one
+      var suggested = suggestTopic(msgEl.value);
+      if (suggested && topicSelect.value === '') {
+        suggestion.textContent = '💡 Suggested: ' + suggested + ' — click to apply';
+        suggestion.onclick = function() {
+          topicSelect.value = suggested;
+          suggestion.textContent = '✓ Topic applied: ' + suggested;
+          suggestion.onclick = null;
+        };
+      } else if (!suggested && topicSelect.value === '') {
+        suggestion.textContent = '';
+      }
+
+      saveDraftNow();
+    };
+
+    // ─────────────────────────────────────────
+    // ✅ AJAX 7: Auto-save draft to localStorage
+    // ─────────────────────────────────────────
+    var draftTimer = null;
+
+    window.saveDraftNow = function() {
+      clearTimeout(draftTimer);
+      draftTimer = setTimeout(function() {
+        var draft = {
+          fname : document.getElementById('fname').value,
+          lname : document.getElementById('lname').value,
+          email : document.getElementById('email').value,
+          phone : document.getElementById('phone').value,
+          topic : document.getElementById('topic').value,
+          msg   : document.getElementById('msg').value
+        };
+        localStorage.setItem('contactDraft', JSON.stringify(draft));
+
+        var ind = document.getElementById('draftIndicator');
+        ind.textContent = '💾 Draft saved';
+        ind.className = 'draft-indicator saved';
+        setTimeout(function() {
+          ind.textContent = '';
+          ind.className = 'draft-indicator';
+        }, 2000);
+      }, 3000);
+    };
+
+    // Load saved draft when page opens
+    function loadDraft() {
+      var saved = localStorage.getItem('contactDraft');
+      if (!saved) return;
+      try {
+        var draft = JSON.parse(saved);
+        if (draft.fname) document.getElementById('fname').value = draft.fname;
+        if (draft.lname) document.getElementById('lname').value = draft.lname;
+        if (draft.email) document.getElementById('email').value = draft.email;
+        if (draft.phone) document.getElementById('phone').value = draft.phone;
+        if (draft.topic) document.getElementById('topic').value = draft.topic;
+        if (draft.msg) {
+          document.getElementById('msg').value = draft.msg;
+          document.getElementById('charCounter').textContent = draft.msg.length + ' / 500 characters';
+        }
+        if (draft.fname || draft.email || draft.msg) {
+          var ind = document.getElementById('draftIndicator');
+          ind.textContent = '📋 Draft restored from your last visit';
+          ind.className = 'draft-indicator saved';
+        }
+      } catch(e) {}
+    }
+
+    // ─────────────────────────────────────────
+    // ✅ AJAX 8: Load FAQs from Firestore
+    // ─────────────────────────────────────────
+    var fallbackFaqs = [
+      { question: "How do I cancel my subscription?",   answer: "You can cancel anytime from Account Settings → Billing. No cancellation fees apply and you keep access until the end of your billing period." },
+      { question: "Can I download my resume as PDF?",    answer: "Yes! You can download your resume as a PDF for free. Word (.docx) export is available on Pro plans." },
+      { question: "Is ApnaResumeBuilder really free?",   answer: "Yes, our basic plan is completely free. You can build and download your resume without paying anything. We also offer Pro plans with extra templates and features." },
+      { question: "How does the AI writing help work?",  answer: "Our AI suggests professional phrases and bullet points based on your job title and experience. It helps you write stronger descriptions that get noticed by recruiters." }
+    ];
+
+    async function loadFaqs() {
+      var faqList = document.getElementById('faqList');
+      try {
+        var snapshot = await getDocs(collection(db, 'faqs'));
+        var faqs = [];
+        snapshot.forEach(function(doc) { faqs.push(doc.data()); });
+        renderFaqs(faqs.length > 0 ? faqs : fallbackFaqs);
+      } catch(e) {
+        renderFaqs(fallbackFaqs);
+      }
+    }
+
+    function renderFaqs(faqs) {
+      document.getElementById('faqList').innerHTML = faqs.map(function(faq) {
+        return '<div class="faq-item" onclick="this.classList.toggle(\'open\')">'
+          + '<div class="faq-question">' + faq.question
+          + '<span class="faq-arrow">▼</span></div>'
+          + '<div class="faq-answer">' + faq.answer + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
+    // ─────────────────────────────────────────
+    // 📤 SUBMIT FORM → Save to Firestore
+    // ─────────────────────────────────────────
+    window.submitForm = async function() {
+      var fname     = document.getElementById('fname').value.trim();
+      var email     = document.getElementById('email').value.trim();
+      var msg       = document.getElementById('msg').value.trim();
+      var errorMsg  = document.getElementById('errorMsg');
       var submitBtn = document.getElementById('submitBtn');
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // Hide previous errors
       errorMsg.style.display = 'none';
 
-      // Basic validation
-      if (!fname || !email || !msg) {
-        alert('Please fill in your name, email, and message.');
+      // Validate before submit
+      if (!fname || fname.length < 2) {
+        validateField('fname');
+        document.getElementById('fname').focus();
+        return;
+      }
+      if (!email || !emailRegex.test(email)) {
+        validateField('email');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (!msg) {
+        document.getElementById('msg').className = 'invalid';
+        document.getElementById('msg').focus();
         return;
       }
 
-      // Show loading state
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
 
       try {
-        // 💾 Save to Firestore collection "contact_submissions"
-        await addDoc(collection(db, "contact_submissions"), {
+        await addDoc(collection(db, 'contact_submissions'), {
           firstName : fname,
           lastName  : document.getElementById('lname').value.trim(),
           email     : email,
@@ -581,12 +659,14 @@
           sentAt    : serverTimestamp()
         });
 
-        // ✅ Show success screen
+        // Clear saved draft after successful submit
+        localStorage.removeItem('contactDraft');
+
         document.getElementById('formArea').style.display = 'none';
         document.getElementById('successBox').style.display = 'block';
 
       } catch (error) {
-        console.error("Firebase error:", error);
+        console.error('Firebase error:', error);
         errorMsg.style.display = 'block';
         submitBtn.textContent = 'Send Message';
         submitBtn.disabled = false;
@@ -594,24 +674,33 @@
     };
 
     // 🔄 Reset form
-    window.resetForm = function () {
+    window.resetForm = function() {
       document.getElementById('formArea').style.display = 'block';
       document.getElementById('successBox').style.display = 'none';
       document.getElementById('errorMsg').style.display = 'none';
       document.getElementById('submitBtn').textContent = 'Send Message';
       document.getElementById('submitBtn').disabled = false;
-      ['fname', 'lname', 'email', 'phone', 'msg'].forEach(function(id) {
-        document.getElementById(id).value = '';
+      document.getElementById('charCounter').textContent = '0 / 500 characters';
+      document.getElementById('charCounter').className = 'char-counter';
+      document.getElementById('topicSuggestion').textContent = '';
+      document.getElementById('emailStatus').textContent = '';
+      document.getElementById('draftIndicator').textContent = '';
+      ['fname','lname','email','phone','msg'].forEach(function(id) {
+        var el = document.getElementById(id);
+        el.value = '';
+        el.className = '';
+      });
+      ['fnameHint','emailHint'].forEach(function(id) {
+        document.getElementById(id).textContent = '';
+        document.getElementById(id).className = 'field-hint';
       });
       document.getElementById('topic').selectedIndex = 0;
     };
-  </script>
 
-  <!-- FAQ toggle (plain script, no module needed) -->
-  <script>
-    function toggleFAQ(item) {
-      item.classList.toggle('open');
-    }
+    // 🚀 Run on page load
+    loadDraft();
+    loadFaqs();
+
   </script>
 
 </body>
