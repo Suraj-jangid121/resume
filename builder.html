@@ -58,10 +58,29 @@
       font-weight: 900;
       font-size: 11px;
     }
+
+    /* Home button */
+    .home-btn {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+    .home-btn:hover { background-color: #1d4ed8; }
     
     .header-actions {
       display: flex;
       gap: 8px;
+      align-items: center;
     }
     
     button {
@@ -216,7 +235,6 @@
     }
     
     .card:active { cursor: grabbing; }
-    
     .card.dragging { opacity: 0.5; }
     
     .card-header {
@@ -386,31 +404,12 @@
   box-sizing: border-box;
   }
   
-  .resume * {
-  box-sizing: border-box;
-  }
-  
-  .resume h1, .resume h2, .resume h3, .resume h4, .resume p {
-  margin: 0;
-  padding: 0;
-  }
-  
-  .resume aside {
-  display: block;
-  }
-  
-  .resume main {
-  display: block !important;
-  }
-  
-  .resume main > * {
-  display: block !important;
-  width: 100% !important;
-  }
-  
-  .resume p {
-  margin: 0;
-  }
+  .resume * { box-sizing: border-box; }
+  .resume h1, .resume h2, .resume h3, .resume h4, .resume p { margin: 0; padding: 0; }
+  .resume aside { display: block; }
+  .resume main { display: block !important; }
+  .resume main > * { display: block !important; width: 100% !important; }
+  .resume p { margin: 0; }
   
   /* Print Styles */
     @media print {
@@ -441,11 +440,9 @@
       header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
       .header-actions { width: 100%; justify-content: flex-end; gap: 8px; }
 
-      /* Mobile menu buttons */
       .mobile-menu { display: inline-flex; align-items: center; justify-content: center; width:40px; height:40px; font-size:20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
       .mobile-right-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; font-size:16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
 
-      /* Make sidebars act like drawers */
       .sidebar, .sidebar-right {
         position: fixed;
         top: 64px;
@@ -465,17 +462,14 @@
       body.show-left-sidebar .sidebar { transform: translateX(0); }
       body.show-right-sidebar .sidebar-right { transform: translateX(0); }
 
-      /* Overlay to dim content while drawer open */
       .mobile-overlay { display: none; position: fixed; inset: 64px 0 0 0; background: rgba(0,0,0,0.45); z-index:150; }
       body.show-left-sidebar .mobile-overlay, body.show-right-sidebar .mobile-overlay { display: block; }
 
       .tabs .tab { font-size: 16px; padding: 8px; }
       .photo-preview { width: 48px; height: 48px; }
       .photo-upload button { padding: 8px; }
-
       .grid-2 { grid-template-columns: 1fr; }
 
-      /* Make resume preview readable on phones */
       .resume {
         transform: none;
         width: 100%;
@@ -485,13 +479,11 @@
         font-size: 14px;
       }
 
-      /* Compact controls */
       button { padding: 10px 12px; font-size: 15px; min-height:44px; }
       input, textarea, select { padding: 12px; font-size: 15px; }
       .add-btn { width: 100%; }
     }
     
-    /* Hidden file inputs */
     input[type="file"] { display: none; }
   </style>
 </head>
@@ -503,6 +495,9 @@
       <span>APNA RESUME BUILDER</span>
     </div>
     <div class="header-actions">
+      <!-- Home button only -->
+      <a href="#" class="home-btn">🏠 Home</a>
+
       <button onclick="saveToStorage()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
         Save
@@ -654,7 +649,6 @@
   <div id="mobileOverlay" class="mobile-overlay" onclick="closeDrawers()" aria-hidden="true"></div>
 
   <script>
-    // Default data
     const defaultData = {
       name: "Enter Your name ",
       role: "Enter Your Role ",
@@ -690,13 +684,10 @@
     
     let data = JSON.parse(JSON.stringify(defaultData));
 
-    // Initialize
     function init() {
       const saved = localStorage.getItem("resumeData");
       if (saved) {
-        try {
-          data = { ...defaultData, ...JSON.parse(saved) };
-        } catch(e) {}
+        try { data = { ...defaultData, ...JSON.parse(saved) }; } catch(e) {}
       }
       populateForm();
       renderColorGrid();
@@ -719,11 +710,9 @@
       document.getElementById('fontSize').value = data.fontSize;
       document.getElementById('fontSizeLabel').textContent = data.fontSize;
       document.getElementById('customColor').value = data.color;
-      
       document.getElementById('togglePhoto').classList.toggle('active', data.showPhoto);
       document.getElementById('toggleSummary').classList.toggle('active', data.showSummary);
       document.getElementById('toggleProjects').classList.toggle('active', data.showProjects);
-      
       if (data.photo) {
         document.getElementById('photoImg').src = data.photo;
         document.getElementById('photoImg').style.display = 'block';
@@ -780,84 +769,37 @@
       });
     }
 
-    function generateId() {
-      return Math.random().toString(36).substring(2, 9);
-    }
+    function generateId() { return Math.random().toString(36).substring(2, 9); }
 
-    // Experience
     function addExperience() {
       data.experience.push({ id: generateId(), title: "Role", company: "Company", year: "Year", description: "Description..." });
-      renderLists();
-      renderPreview();
+      renderLists(); renderPreview();
     }
+    function updateExperience(index, field, value) { data.experience[index][field] = value; renderPreview(); }
+    function removeExperience(index) { data.experience.splice(index, 1); renderLists(); renderPreview(); }
 
-    function updateExperience(index, field, value) {
-      data.experience[index][field] = value;
-      renderPreview();
-    }
-
-    function removeExperience(index) {
-      data.experience.splice(index, 1);
-      renderLists();
-      renderPreview();
-    }
-
-    // Education
     function addEducation() {
       data.education.push({ id: generateId(), degree: "Degree", school: "School", year: "Year" });
-      renderLists();
-      renderPreview();
+      renderLists(); renderPreview();
     }
+    function updateEducation(index, field, value) { data.education[index][field] = value; renderPreview(); }
+    function removeEducation(index) { data.education.splice(index, 1); renderLists(); renderPreview(); }
 
-    function updateEducation(index, field, value) {
-      data.education[index][field] = value;
-      renderPreview();
-    }
-
-    function removeEducation(index) {
-      data.education.splice(index, 1);
-      renderLists();
-      renderPreview();
-    }
-
-    // Projects
     function addProject() {
       data.projects.push({ id: generateId(), name: "Project Name", tech: "Tech Stack", description: "Description...", link: "" });
-      renderLists();
-      renderPreview();
+      renderLists(); renderPreview();
     }
+    function updateProject(index, field, value) { data.projects[index][field] = value; renderPreview(); }
+    function removeProject(index) { data.projects.splice(index, 1); renderLists(); renderPreview(); }
 
-    function updateProject(index, field, value) {
-      data.projects[index][field] = value;
-      renderPreview();
-    }
-
-    function removeProject(index) {
-      data.projects.splice(index, 1);
-      renderLists();
-      renderPreview();
-    }
-
-    // Custom Sections
     function addCustom() {
       data.custom.push({ id: generateId(), title: "Section Title", content: "Content here..." });
-      renderLists();
-      renderPreview();
+      renderLists(); renderPreview();
     }
-
-    function updateCustom(index, field, value) {
-      data.custom[index][field] = value;
-      renderPreview();
-    }
-
-    function removeCustom(index) {
-      data.custom.splice(index, 1);
-      renderLists();
-      renderPreview();
-    }
+    function updateCustom(index, field, value) { data.custom[index][field] = value; renderPreview(); }
+    function removeCustom(index) { data.custom.splice(index, 1); renderLists(); renderPreview(); }
 
     function renderLists() {
-      // Experience
       document.getElementById('experienceList').innerHTML = data.experience.map((e, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'experience', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'experience', ${i})">
           <button class="remove-btn" onclick="removeExperience(${i})">&#10005;</button>
@@ -868,7 +810,6 @@
         </div>
       `).join('');
 
-      // Education
       document.getElementById('educationList').innerHTML = data.education.map((e, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'education', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'education', ${i})">
           <button class="remove-btn" onclick="removeEducation(${i})">&#10005;</button>
@@ -878,7 +819,6 @@
         </div>
       `).join('');
 
-      // Projects
       document.getElementById('projectsList').innerHTML = data.projects.map((p, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'projects', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'projects', ${i})">
           <button class="remove-btn" onclick="removeProject(${i})">&#10005;</button>
@@ -889,7 +829,6 @@
         </div>
       `).join('');
 
-      // Custom
       document.getElementById('customList').innerHTML = data.custom.map((c, i) => `
         <div class="card" style="border-color:rgba(34,197,94,0.2);" draggable="true" ondragstart="dragStart(event, 'custom', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'custom', ${i})">
           <button class="remove-btn" onclick="removeCustom(${i})">&#10005;</button>
@@ -905,34 +844,20 @@
       return div.innerHTML;
     }
 
-    // Drag and Drop
     let dragData = null;
-
-    function dragStart(e, type, index) {
-      dragData = { type, index };
-      e.target.classList.add('dragging');
-    }
-
-    function dragOver(e) {
-      e.preventDefault();
-    }
-
+    function dragStart(e, type, index) { dragData = { type, index }; e.target.classList.add('dragging'); }
+    function dragOver(e) { e.preventDefault(); }
     function drop(e, type, targetIndex) {
       e.preventDefault();
       document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-      
       if (!dragData || dragData.type !== type) return;
-      
       const items = data[type];
       const [removed] = items.splice(dragData.index, 1);
       items.splice(targetIndex, 0, removed);
-      
       dragData = null;
-      renderLists();
-      renderPreview();
+      renderLists(); renderPreview();
     }
 
-    // Photo Upload
     function uploadPhoto(e) {
       const file = e.target.files[0];
       if (file) {
@@ -950,7 +875,6 @@
       }
     }
 
-    // Save/Export/Import
     function saveToStorage() {
       localStorage.setItem("resumeData", JSON.stringify(data));
       alert("Resume saved!");
@@ -960,9 +884,7 @@
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = "resume-data.json";
-      a.click();
+      a.href = url; a.download = "resume-data.json"; a.click();
       URL.revokeObjectURL(url);
     }
 
@@ -974,12 +896,8 @@
           try {
             const imported = JSON.parse(ev.target.result);
             data = { ...defaultData, ...imported };
-            populateForm();
-            renderLists();
-            renderPreview();
-          } catch(err) {
-            alert("Invalid JSON file");
-          }
+            populateForm(); renderLists(); renderPreview();
+          } catch(err) { alert("Invalid JSON file"); }
         };
         reader.readAsText(file);
       }
@@ -991,13 +909,10 @@
         localStorage.removeItem("resumeData");
         document.getElementById('photoImg').style.display = 'none';
         document.getElementById('photoPlaceholder').style.display = 'block';
-        populateForm();
-        renderLists();
-        renderPreview();
+        populateForm(); renderLists(); renderPreview();
       }
     }
 
-    // Render Preview
     function renderPreview() {
       const fs = data.fontSize + 'px';
       const col = data.color;
@@ -1213,25 +1128,21 @@
       document.getElementById('resumePreview').style.fontFamily = data.fontFamily;
     }
 
-      // Mobile drawer toggle helpers
-      function toggleLeftSidebar() {
-        const opened = document.body.classList.toggle('show-left-sidebar');
-        if (opened) document.body.classList.remove('show-right-sidebar');
-      }
+    function toggleLeftSidebar() {
+      const opened = document.body.classList.toggle('show-left-sidebar');
+      if (opened) document.body.classList.remove('show-right-sidebar');
+    }
 
-      function toggleRightSidebar() {
-        const opened = document.body.classList.toggle('show-right-sidebar');
-        if (opened) document.body.classList.remove('show-left-sidebar');
-      }
+    function toggleRightSidebar() {
+      const opened = document.body.classList.toggle('show-right-sidebar');
+      if (opened) document.body.classList.remove('show-left-sidebar');
+    }
 
-      function closeDrawers() {
-        document.body.classList.remove('show-left-sidebar', 'show-right-sidebar');
-      }
+    function closeDrawers() {
+      document.body.classList.remove('show-left-sidebar', 'show-right-sidebar');
+    }
 
-    // Initialize on load
     init();
   </script>
 </body>
 </html>
-
-
