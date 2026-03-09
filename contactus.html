@@ -88,7 +88,7 @@
       margin-bottom: 8px;
     }
 
-    .contact-info p {
+    .contact-info > p {
       color: #aaa;
       font-size: 14px;
       line-height: 1.6;
@@ -141,7 +141,7 @@
       margin-bottom: 6px;
     }
 
-    .contact-form p {
+    .contact-form > div > p {
       color: #aaa;
       font-size: 13px;
       margin-bottom: 25px;
@@ -215,10 +215,29 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: 8px;
+      transition: background 0.2s;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover:not(:disabled) {
       background-color: #1d4ed8;
+    }
+
+    .submit-btn:disabled {
+      background-color: #1e3a6e;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    /* Error message */
+    .error-msg {
+      display: none;
+      background-color: rgba(220, 38, 38, 0.1);
+      border: 1px solid #dc2626;
+      color: #f87171;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 10px;
     }
 
     /* Success message */
@@ -252,6 +271,10 @@
       border-radius: 8px;
       font-size: 14px;
       cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background-color: rgba(37, 99, 235, 0.1);
     }
 
     /* FAQ section */
@@ -321,10 +344,12 @@
 
     /* Mobile */
     @media (max-width: 768px) {
-      .nav-links { display: none; }
+      .top-bar { padding: 12px 20px; }
+      .container { padding: 40px 20px; }
       .contact-layout { flex-direction: column; }
       .form-row { flex-direction: column; }
       .page-heading h1 { font-size: 28px; }
+      .contact-form { padding: 24px 18px; }
     }
   </style>
 </head>
@@ -365,9 +390,8 @@
           <div class="info-icon">📞</div>
           <div class="info-text">
             <h4>Call Us</h4>
-            <p>8090306138</p>
-            <p>7747233411</p>
-            <p>Mon–Fri, 9am – 6pm</p>
+            <p>+91 98765 43210</p>
+            <p>Mon–Sat, 9am – 6pm IST</p>
           </div>
         </div>
 
@@ -375,7 +399,8 @@
           <div class="info-icon">📍</div>
           <div class="info-text">
             <h4>Our Office</h4>
-            <p>Mansarovar</p>
+            <p>Koramangala, Bengaluru</p>
+            <p>Karnataka – 560034</p>
           </div>
         </div>
 
@@ -384,13 +409,15 @@
           <div class="info-text">
             <h4>Live Chat</h4>
             <p>Available on our website</p>
-            <p>Mon–Fri during business hours</p>
+            <p>Mon–Sat during business hours</p>
           </div>
         </div>
       </div>
 
       <!-- Right: Form -->
       <div class="contact-form">
+
+        <!-- Form area -->
         <div id="formArea">
           <h2>Send a Message</h2>
           <p>Fill out the form below and we'll get back to you soon.</p>
@@ -398,22 +425,22 @@
           <div class="form-row">
             <div class="form-group">
               <label>First Name</label>
-              <input type="text" id="fname" placeholder="First Name" />
+              <input type="text" id="fname" placeholder="e.g. Arjun" />
             </div>
             <div class="form-group">
               <label>Last Name</label>
-              <input type="text" id="lname" placeholder="Last Name" />
+              <input type="text" id="lname" placeholder="e.g. Sharma" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label>Email Address</label>
-              <input type="email" id="email" placeholder="Email Address" />
+              <input type="email" id="email" placeholder="e.g. arjun@gmail.com" />
             </div>
             <div class="form-group">
               <label>Phone (optional)</label>
-              <input type="tel" id="phone" placeholder="Phone Number" />
+              <input type="tel" id="phone" placeholder="e.g. +91 98765 43210" />
             </div>
           </div>
 
@@ -434,18 +461,25 @@
             <textarea id="msg" placeholder="Tell us how we can help..."></textarea>
           </div>
 
-          <button class="submit-btn" onclick="submitForm()">Send Message</button>
+          <!-- Error message (shown if Firebase fails) -->
+          <div class="error-msg" id="errorMsg">
+            ⚠️ Something went wrong. Please try again.
+          </div>
+
+          <button class="submit-btn" id="submitBtn" onclick="submitForm()">
+            Send Message
+          </button>
         </div>
 
-        <!-- Success -->
+        <!-- Success screen -->
         <div class="success-box" id="successBox">
           <div class="check">✅</div>
           <h3>Message Sent!</h3>
           <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
           <button class="back-btn" onclick="resetForm()">Send Another Message</button>
         </div>
-      </div>
 
+      </div>
     </div>
 
     <!-- FAQ Section -->
@@ -495,31 +529,86 @@
     © 2024 ApnaResumeBuilder. All rights reserved.
   </footer>
 
-  <script>
-    function submitForm() {
+  <!-- ✅ FIREBASE INTEGRATION -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+    // 🔐 Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGALyet-KO-n2je5rBgg5mDWfYyIfaRS0",
+      authDomain: "apnaresumebuilder.firebaseapp.com",
+      projectId: "apnaresumebuilder",
+      storageBucket: "apnaresumebuilder.firebasestorage.app",
+      messagingSenderId: "478270455880",
+      appId: "1:478270455880:web:8a52a65ad267b1277e587d"
+    };
+
+    // 🚀 Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 📤 Submit form and save to Firestore
+    window.submitForm = async function () {
       var fname = document.getElementById('fname').value.trim();
       var email = document.getElementById('email').value.trim();
-      var msg = document.getElementById('msg').value.trim();
+      var msg   = document.getElementById('msg').value.trim();
+      var errorMsg = document.getElementById('errorMsg');
+      var submitBtn = document.getElementById('submitBtn');
 
+      // Hide previous errors
+      errorMsg.style.display = 'none';
+
+      // Basic validation
       if (!fname || !email || !msg) {
         alert('Please fill in your name, email, and message.');
         return;
       }
 
-      document.getElementById('formArea').style.display = 'none';
-      document.getElementById('successBox').style.display = 'block';
-    }
+      // Show loading state
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
 
-    function resetForm() {
+      try {
+        // 💾 Save to Firestore collection "contact_submissions"
+        await addDoc(collection(db, "contact_submissions"), {
+          firstName : fname,
+          lastName  : document.getElementById('lname').value.trim(),
+          email     : email,
+          phone     : document.getElementById('phone').value.trim(),
+          topic     : document.getElementById('topic').value,
+          message   : msg,
+          sentAt    : serverTimestamp()
+        });
+
+        // ✅ Show success screen
+        document.getElementById('formArea').style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+
+      } catch (error) {
+        console.error("Firebase error:", error);
+        errorMsg.style.display = 'block';
+        submitBtn.textContent = 'Send Message';
+        submitBtn.disabled = false;
+      }
+    };
+
+    // 🔄 Reset form
+    window.resetForm = function () {
       document.getElementById('formArea').style.display = 'block';
       document.getElementById('successBox').style.display = 'none';
-      document.getElementById('fname').value = '';
-      document.getElementById('lname').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('phone').value = '';
-      document.getElementById('msg').value = '';
-    }
+      document.getElementById('errorMsg').style.display = 'none';
+      document.getElementById('submitBtn').textContent = 'Send Message';
+      document.getElementById('submitBtn').disabled = false;
+      ['fname', 'lname', 'email', 'phone', 'msg'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('topic').selectedIndex = 0;
+    };
+  </script>
 
+  <!-- FAQ toggle (plain script, no module needed) -->
+  <script>
     function toggleFAQ(item) {
       item.classList.toggle('open');
     }
