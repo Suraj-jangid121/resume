@@ -541,25 +541,25 @@
           <input type="file" id="photoInput" accept="image/*" onchange="uploadPhoto(event)">
         </div>
 
-        <input type="text" id="name" placeholder="Full Name" oninput="updateData('name', this.value)">
-        <input type="text" id="role" placeholder="Job Title" oninput="updateData('role', this.value)">
+        <input type="text" id="name" placeholder="e.g. Arjun Sharma" oninput="updateData('name', this.value)">
+        <input type="text" id="role" placeholder="e.g. Full Stack Developer" oninput="updateData('role', this.value)">
 
         <div class="section-header">Contact</div>
         <div class="grid-2">
-          <input type="email" id="email" placeholder="Email" oninput="updateData('email', this.value)">
-          <input type="tel" id="phone" placeholder="Phone" oninput="updateData('phone', this.value)">
+          <input type="email" id="email" placeholder="e.g. arjun.sharma@gmail.com" oninput="updateData('email', this.value)">
+          <input type="tel" id="phone" placeholder="e.g. +91 98765 43210" oninput="updateData('phone', this.value)">
         </div>
         <div class="grid-2">
-          <input type="text" id="location" placeholder="Location" oninput="updateData('location', this.value)">
-          <input type="text" id="linkedin" placeholder="LinkedIn" oninput="updateData('linkedin', this.value)">
+          <input type="text" id="location" placeholder="e.g. Bengaluru, Karnataka" oninput="updateData('location', this.value)">
+          <input type="text" id="linkedin" placeholder="e.g. linkedin.com/in/arjunsharma" oninput="updateData('linkedin', this.value)">
         </div>
-        <input type="text" id="website" placeholder="Website" oninput="updateData('website', this.value)">
+        <input type="text" id="website" placeholder="e.g. arjunsharma.dev" oninput="updateData('website', this.value)">
 
         <div class="section-header">Summary</div>
-        <textarea id="summary" placeholder="Professional summary..." rows="4" oninput="updateData('summary', this.value)"></textarea>
+        <textarea id="summary" placeholder="e.g. Results-driven developer with 5+ years of experience building scalable web apps..." rows="4" oninput="updateData('summary', this.value)"></textarea>
 
         <div class="section-header">Skills</div>
-        <input type="text" id="skills" placeholder="Skills (comma separated)" oninput="updateSkills(this.value)">
+        <input type="text" id="skills" placeholder="e.g. JavaScript, React, Python, SQL" oninput="updateSkills(this.value)">
       </div>
 
       <!-- Experience Tab -->
@@ -650,24 +650,24 @@
 
   <script>
     const defaultData = {
-      name: "Enter Your name ",
-      role: "Enter Your Role ",
-      email: "Your Email",
-      phone: "YOur Mobile Number ",
-      location: "Address",
-      linkedin: "Linkedin Profile",
-      website: "YOur Website ",
-      summary: "Tell Us About You",
-      skills: ["Skill You Mastered"],
+      name: "Arjun Sharma",
+      role: "Full Stack Developer",
+      email: "arjun.sharma@gmail.com",
+      phone: "+91 98765 43210",
+      location: "Bengaluru, Karnataka",
+      linkedin: "linkedin.com/in/arjunsharma",
+      website: "arjunsharma.dev",
+      summary: "Results-driven Full Stack Developer with 5+ years of experience building scalable web applications. Passionate about clean code, performance optimization, and delivering exceptional user experiences.",
+      skills: ["JavaScript", "React", "Node.js", "Python", "SQL", "Git"],
       experience: [
-        { id: "1", title: "Senior Developer", company: "Tech Corp", year: "2022 - Present", description: "Led development of core platform features, improving performance by 40%." },
-        { id: "2", title: "Software Engineer", company: "StartupXYZ", year: "2019 - 2022", description: "Built and maintained microservices architecture serving 1M+ users." }
+        { id: "1", title: "Senior Full Stack Developer", company: "Infosys Ltd.", year: "2022 – Present", description: "Led development of core platform features used by 500K+ users. Improved application performance by 40% through code refactoring and caching strategies." },
+        { id: "2", title: "Software Engineer", company: "Wipro Technologies", year: "2019 – 2022", description: "Built and maintained microservices architecture. Collaborated with cross-functional teams to deliver 3 major product releases on schedule." }
       ],
       education: [
-        { id: "1", degree: "B.S. Computer Science", school: "Stanford University", year: "2019" }
+        { id: "1", degree: "B.Tech Computer Science", school: "IIT Bombay", year: "2019" }
       ],
       projects: [
-        { id: "1", name: "OpenSource CLI Tool", tech: "Go, Cobra", description: "Developer productivity tool with 2K+ GitHub stars", link: "github.com/project" }
+        { id: "1", name: "E-Commerce Dashboard", tech: "React, Node.js, MongoDB", description: "Full-featured admin dashboard with real-time analytics, inventory management, and order tracking for online stores.", link: "github.com/arjunsharma/ecommerce-dashboard" }
       ],
       custom: [],
       photo: "",
@@ -803,37 +803,37 @@
       document.getElementById('experienceList').innerHTML = data.experience.map((e, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'experience', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'experience', ${i})">
           <button class="remove-btn" onclick="removeExperience(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(e.title)}" placeholder="Job Title" oninput="updateExperience(${i}, 'title', this.value)">
-          <input type="text" value="${escapeHtml(e.company)}" placeholder="Company" oninput="updateExperience(${i}, 'company', this.value)">
-          <input type="text" value="${escapeHtml(e.year)}" placeholder="Year" oninput="updateExperience(${i}, 'year', this.value)">
-          <textarea placeholder="Description" oninput="updateExperience(${i}, 'description', this.value)">${escapeHtml(e.description)}</textarea>
+          <input type="text" value="${escapeHtml(e.title)}" placeholder="e.g. Senior Software Engineer" oninput="updateExperience(${i}, 'title', this.value)">
+          <input type="text" value="${escapeHtml(e.company)}" placeholder="e.g. Infosys, TCS, Wipro" oninput="updateExperience(${i}, 'company', this.value)">
+          <input type="text" value="${escapeHtml(e.year)}" placeholder="e.g. Jan 2022 – Present" oninput="updateExperience(${i}, 'year', this.value)">
+          <textarea placeholder="Describe your responsibilities and achievements..." oninput="updateExperience(${i}, 'description', this.value)">${escapeHtml(e.description)}</textarea>
         </div>
       `).join('');
 
       document.getElementById('educationList').innerHTML = data.education.map((e, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'education', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'education', ${i})">
           <button class="remove-btn" onclick="removeEducation(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(e.degree)}" placeholder="Degree" oninput="updateEducation(${i}, 'degree', this.value)">
-          <input type="text" value="${escapeHtml(e.school)}" placeholder="School" oninput="updateEducation(${i}, 'school', this.value)">
-          <input type="text" value="${escapeHtml(e.year)}" placeholder="Year" oninput="updateEducation(${i}, 'year', this.value)">
+          <input type="text" value="${escapeHtml(e.degree)}" placeholder="e.g. B.Tech Computer Science" oninput="updateEducation(${i}, 'degree', this.value)">
+          <input type="text" value="${escapeHtml(e.school)}" placeholder="e.g. IIT Bombay, NIT Trichy, VTU" oninput="updateEducation(${i}, 'school', this.value)">
+          <input type="text" value="${escapeHtml(e.year)}" placeholder="e.g. 2020" oninput="updateEducation(${i}, 'year', this.value)">
         </div>
       `).join('');
 
       document.getElementById('projectsList').innerHTML = data.projects.map((p, i) => `
         <div class="card" draggable="true" ondragstart="dragStart(event, 'projects', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'projects', ${i})">
           <button class="remove-btn" onclick="removeProject(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(p.name)}" placeholder="Project Name" oninput="updateProject(${i}, 'name', this.value)">
-          <input type="text" value="${escapeHtml(p.tech)}" placeholder="Tech Stack" oninput="updateProject(${i}, 'tech', this.value)">
-          <textarea placeholder="Description" oninput="updateProject(${i}, 'description', this.value)">${escapeHtml(p.description)}</textarea>
-          <input type="text" value="${escapeHtml(p.link)}" placeholder="Link (optional)" oninput="updateProject(${i}, 'link', this.value)">
+          <input type="text" value="${escapeHtml(p.name)}" placeholder="e.g. E-Commerce Dashboard" oninput="updateProject(${i}, 'name', this.value)">
+          <input type="text" value="${escapeHtml(p.tech)}" placeholder="e.g. React, Node.js, MongoDB" oninput="updateProject(${i}, 'tech', this.value)">
+          <textarea placeholder="Describe what you built and its impact..." oninput="updateProject(${i}, 'description', this.value)">${escapeHtml(p.description)}</textarea>
+          <input type="text" value="${escapeHtml(p.link)}" placeholder="e.g. github.com/yourname/project" oninput="updateProject(${i}, 'link', this.value)">
         </div>
       `).join('');
 
       document.getElementById('customList').innerHTML = data.custom.map((c, i) => `
         <div class="card" style="border-color:rgba(34,197,94,0.2);" draggable="true" ondragstart="dragStart(event, 'custom', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'custom', ${i})">
           <button class="remove-btn" onclick="removeCustom(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(c.title)}" placeholder="Section Title" oninput="updateCustom(${i}, 'title', this.value)">
-          <textarea placeholder="Content" oninput="updateCustom(${i}, 'content', this.value)">${escapeHtml(c.content)}</textarea>
+          <input type="text" value="${escapeHtml(c.title)}" placeholder="e.g. Certifications, Volunteer Work, Languages" oninput="updateCustom(${i}, 'title', this.value)">
+          <textarea placeholder="e.g. AWS Certified Developer, Red Cross Volunteer (2021–Present)..." oninput="updateCustom(${i}, 'content', this.value)">${escapeHtml(c.content)}</textarea>
         </div>
       `).join('');
     }
