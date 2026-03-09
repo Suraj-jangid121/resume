@@ -235,16 +235,63 @@ input[type="range"]::-webkit-slider-thumb{
 
 /* ────────────────── PREVIEW ────────────────── */
 .preview{
-  flex:1;background:#1a1a1a;overflow-y:auto;
+  flex:1;background:#1a1a1a;overflow-y:auto;overflow-x:hidden;
   display:flex;flex-direction:column;align-items:center;
-  padding:28px 20px;
+  padding:0 0 40px;
   background-image:
     radial-gradient(circle at 20% 10%, rgba(37,99,235,0.04) 0%, transparent 50%),
     radial-gradient(circle at 80% 90%, rgba(37,99,235,0.03) 0%, transparent 50%);
+  position:relative;
 }
+
+/* Zoom toolbar — sticky at top of preview pane */
+.zoom-bar{
+  position:sticky;top:0;z-index:20;
+  width:100%;
+  background:rgba(18,18,18,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 18px;
+  gap:10px;
+}
+.zoom-controls{display:flex;align-items:center;gap:4px;}
+.zoom-btn{
+  width:30px;height:30px;border-radius:6px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text);font-size:16px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;flex-shrink:0;font-family:'DM Sans',sans-serif;
+}
+.zoom-btn:hover{background:var(--border2);border-color:#3a3a3a;}
+.zoom-btn:active{transform:scale(0.93);}
+.zoom-val{
+  min-width:52px;text-align:center;
+  font-size:12.5px;font-weight:700;color:var(--text);
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:6px;padding:5px 8px;
+  font-family:'DM Sans',sans-serif;
+}
+.zoom-sep{width:1px;height:20px;background:var(--border2);margin:0 4px;}
+.zoom-preset{
+  padding:5px 10px;border-radius:6px;
+  background:transparent;border:1px solid var(--border2);
+  color:var(--muted);font-size:11.5px;font-weight:600;cursor:pointer;
+  transition:all 0.15s;font-family:'DM Sans',sans-serif;
+}
+.zoom-preset:hover{background:var(--surface2);color:var(--text);}
+.zoom-preset.active{background:var(--blue-dim);border-color:var(--blue-border);color:#93c5fd;}
+
 .preview-label{
   font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--faint);margin-bottom:14px;align-self:flex-start;padding-left:4px;
+  color:var(--faint);padding:18px 18px 0;align-self:flex-start;
+}
+
+/* Paper wrapper — handles scrollable space around the scaled paper */
+.paper-wrap{
+  display:flex;justify-content:center;
+  padding:20px 20px 0;
+  width:100%;
 }
 
 .paper{
@@ -253,20 +300,18 @@ input[type="range"]::-webkit-slider-thumb{
   color:#111;
   font-family:'DM Sans',sans-serif;
   box-shadow:0 0 0 1px rgba(0,0,0,0.06),0 20px 60px rgba(0,0,0,0.5);
-  transform:scale(0.63);
   transform-origin:top center;
   flex-shrink:0;
-  /* keeps layout from collapsing after scale */
-  margin-bottom: calc((297mm * 0.63) - 297mm);
+  transition:transform 0.2s ease, margin-bottom 0.2s ease;
 }
 
 /* ────────────────── PRINT ────────────────── */
 @media print{
-  .topbar,.sidebar{display:none!important;}
+  .topbar,.sidebar,.zoom-bar,.preview-label{display:none!important;}
   .layout{display:block!important;height:auto!important;}
   .preview{padding:0!important;background:#fff!important;display:block!important;}
+  .paper-wrap{padding:0!important;}
   .paper{transform:none!important;box-shadow:none!important;width:100%!important;margin:0!important;}
-  .preview-label{display:none!important;}
 }
 
 /* ────────────────── RESPONSIVE ────────────────── */
@@ -274,8 +319,7 @@ input[type="range"]::-webkit-slider-thumb{
   body{overflow:auto;}
   .layout{flex-direction:column;overflow:visible;}
   .sidebar{width:100%;min-width:unset;max-height:52vh;overflow-y:auto;}
-  .paper{transform:scale(0.4);transform-origin:top center;}
-  .preview{padding:12px 6px;}
+  .preview{padding:0 0 40px;}
 }
 </style>
 </head>
@@ -413,9 +457,30 @@ input[type="range"]::-webkit-slider-thumb{
   </div><!-- /sidebar -->
 
   <!-- PREVIEW PANE -->
-  <div class="preview">
-    <div class="preview-label">Live Preview — A4</div>
-    <div class="paper" id="paper"></div>
+  <div class="preview" id="previewPane">
+
+    <!-- Zoom toolbar -->
+    <div class="zoom-bar">
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="changeZoom(-10)" title="Zoom out">−</button>
+        <div class="zoom-val" id="zoomVal">65%</div>
+        <button class="zoom-btn" onclick="changeZoom(+10)" title="Zoom in">+</button>
+        <div class="zoom-sep"></div>
+        <button class="zoom-preset" onclick="setZoom(40)"  id="zp-40">40%</button>
+        <button class="zoom-preset" onclick="setZoom(65)"  id="zp-65">65%</button>
+        <button class="zoom-preset active" onclick="setZoom(80)"  id="zp-80">80%</button>
+        <button class="zoom-preset" onclick="setZoom(100)" id="zp-100">100%</button>
+        <div class="zoom-sep"></div>
+        <button class="zoom-btn" onclick="fitToPane()" title="Fit to window" style="width:auto;padding:0 10px;font-size:12px;gap:4px;">⊞ Fit</button>
+      </div>
+      <div class="preview-label" style="padding:0;margin:0;">Live Preview — A4</div>
+    </div>
+
+    <!-- Paper wrapper -->
+    <div class="paper-wrap" id="paperWrap">
+      <div class="paper" id="paper"></div>
+    </div>
+
   </div>
 
 </div><!-- /layout -->
@@ -745,7 +810,85 @@ function render(){
   p.style.fontSize=fs+"px";
 }
 
+/* ═══════════════════════════ ZOOM ═══════════════════════════ */
+var zoom = 65; // default %
+
+function applyZoom(z){
+  zoom = Math.min(150, Math.max(25, z));
+  var scale = zoom / 100;
+  var paper = document.getElementById("paper");
+  var paperW = 794; // px width of the paper
+
+  // Apply scale transform
+  paper.style.transform = "scale(" + scale + ")";
+  paper.style.transformOrigin = "top center";
+
+  // Compensate for scale so paper-wrap has correct height
+  // Actual rendered height = natural height * scale
+  // Natural paper height ~ 297mm ≈ 1123px (96dpi)
+  var naturalH = paper.scrollHeight || 1123;
+  var scaledH = naturalH * scale;
+  var marginCorrection = scaledH - naturalH;
+  paper.style.marginBottom = marginCorrection + "px";
+
+  // If zoom > ~85% paper may overflow horizontally — allow horizontal scroll
+  var wrap = document.getElementById("paperWrap");
+  var previewW = document.getElementById("previewPane").offsetWidth;
+  var scaledW = paperW * scale;
+  if(scaledW > previewW - 40){
+    wrap.style.justifyContent = "flex-start";
+    wrap.style.paddingLeft = "20px";
+    wrap.style.overflowX = "auto";
+  } else {
+    wrap.style.justifyContent = "center";
+    wrap.style.paddingLeft = "20px";
+    wrap.style.overflowX = "visible";
+  }
+
+  // Update displayed value
+  document.getElementById("zoomVal").textContent = zoom + "%";
+
+  // Highlight matching preset button
+  [40,65,80,100].forEach(function(v){
+    var el = document.getElementById("zp-"+v);
+    if(el) el.classList.toggle("active", v === zoom);
+  });
+}
+
+function changeZoom(delta){ applyZoom(zoom + delta); }
+function setZoom(z){ applyZoom(z); }
+
+function fitToPane(){
+  var paneW = document.getElementById("previewPane").offsetWidth;
+  var paneH = document.getElementById("previewPane").offsetHeight - 60; // minus zoom bar
+  var paperW = 794;
+  var paperH = 1123;
+  var scaleW = (paneW - 60) / paperW;
+  var scaleH = (paneH - 60) / paperH;
+  var best = Math.floor(Math.min(scaleW, scaleH) * 100);
+  applyZoom(Math.min(100, best));
+}
+
+// Mouse-wheel zoom over the preview pane
+document.getElementById("previewPane").addEventListener("wheel", function(e){
+  if(e.ctrlKey || e.metaKey){
+    e.preventDefault();
+    changeZoom(e.deltaY < 0 ? +5 : -5);
+  }
+}, { passive: false });
+
+// Keyboard shortcuts: Ctrl+= / Ctrl+- / Ctrl+0
+document.addEventListener("keydown", function(e){
+  if(e.ctrlKey || e.metaKey){
+    if(e.key === "=" || e.key === "+"){  e.preventDefault(); changeZoom(+10); }
+    if(e.key === "-"){                   e.preventDefault(); changeZoom(-10); }
+    if(e.key === "0"){                   e.preventDefault(); fitToPane(); }
+  }
+});
+
 init();
+// Apply default zoom after init so paper content is rendered first
+setTimeout(function(){ applyZoom(65); }, 50);
 </script>
 </body>
 </html>
