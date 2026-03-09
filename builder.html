@@ -1,1148 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design Studio Pro | Resume Builder</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    :root {
-      --bg-primary: #09090b;
-      --bg-secondary: #0a0a0a;
-      --bg-card: rgba(255,255,255,0.03);
-      --border: rgba(255,255,255,0.1);
-      --text-primary: #fafafa;
-      --text-secondary: #a1a1aa;
-      --accent: #3b82f6;
-    }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Header */
-    header {
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 24px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-    }
-    
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 11px;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Resume Builder – ApnaResumeBuilder</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #080808;
+  --surface: #101010;
+  --surface2: #161616;
+  --border: #1f1f1f;
+  --border2: #2a2a2a;
+  --blue: #2563eb;
+  --blue-hover: #1d4ed8;
+  --blue-dim: rgba(37,99,235,0.12);
+  --blue-border: rgba(37,99,235,0.3);
+  --text: #f0f0f0;
+  --muted: #888;
+  --faint: #444;
+  --danger: #dc2626;
+}
 
-    /* Home button */
-    .home-btn {
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: background 0.15s ease;
-    }
-    .home-btn:hover { background-color: #1d4ed8; }
-    
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    
-    button {
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-    
-    button:hover { background: rgba(255,255,255,0.05); }
-    button.primary { background: var(--accent); border-color: var(--accent); }
-    button.primary:hover { background: #2563eb; }
-    button.danger { border-color: #dc2626; color: #f87171; }
-    button.danger:hover { background: rgba(220,38,38,0.1); }
-    
-    /* Main Layout */
-    main {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
-    
-    /* Sidebars */
-    .sidebar {
-      width: 360px;
-      border-right: 1px solid var(--border);
-      overflow-y: auto;
-      background: var(--bg-secondary);
-      padding: 20px;
-    }
-    
-    .sidebar-right {
-      width: 280px;
-      border-left: 1px solid var(--border);
-      border-right: none;
-      padding: 24px;
-    }
-    
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      background: rgba(255,255,255,0.05);
-      padding: 4px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    
-    .tab {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      border-radius: 6px;
-      color: var(--text-secondary);
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    
-    .tab.active {
-      background: var(--accent);
-      color: white;
-    }
-    
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    
-    /* Form Elements */
-    .section-header {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--accent);
-      margin: 20px 0 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .section-header:first-child { margin-top: 0; }
-    
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      margin-bottom: 6px;
-    }
-    
-    input, textarea, select {
-      width: 100%;
-      padding: 10px 12px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text-primary);
-      font-family: inherit;
-      font-size: 13px;
-      margin-bottom: 10px;
-      transition: border-color 0.15s ease;
-    }
-    
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-    
-    textarea { resize: vertical; min-height: 80px; }
-    
-    select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a1a1aa' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-    }
-    
-    select option {
-      background: #1a1a1a;
-      color: #fafafa;
-      padding: 10px;
-    }
-    
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    
-    .grid-2 input, .grid-2 select { margin-bottom: 0; }
-    
-    /* Cards */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-      position: relative;
-      cursor: grab;
-    }
-    
-    .card:active { cursor: grabbing; }
-    .card.dragging { opacity: 0.5; }
-    
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .card .remove-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      border: none;
-      background: transparent;
-      color: #f87171;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-    }
-    
-    .card:hover .remove-btn { opacity: 1; }
-    
-    .card input, .card textarea { margin-bottom: 8px; }
-    .card input:last-child, .card textarea:last-child { margin-bottom: 0; }
-    
-    .add-btn {
-      width: 100%;
-      justify-content: center;
-      margin-top: 10px;
-      border-style: dashed;
-    }
-    
-    /* Photo Upload */
-    .photo-upload {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-    
-    .photo-preview {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      border: 2px dashed var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      cursor: pointer;
-      transition: border-color 0.15s ease;
-    }
-    
-    .photo-preview:hover { border-color: var(--accent); }
-    .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-preview span { font-size: 24px; opacity: 0.3; }
-    
-    /* Color Picker */
-    .color-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    
-    .color-btn {
-      width: 100%;
-      height: 32px;
-      padding: 0;
-      border-radius: 6px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    
-    .color-btn.active { border-color: white; box-shadow: 0 0 0 2px var(--bg-primary); }
-    
-    input[type="color"] {
-      width: 100%;
-      height: 32px;
-      padding: 2px;
-      cursor: pointer;
-    }
-    
-    /* Slider */
-    input[type="range"] {
-      -webkit-appearance: none;
-      background: rgba(255,255,255,0.1);
-      height: 6px;
-      border-radius: 3px;
-      margin: 10px 0;
-    }
-    
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      background: var(--accent);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    
-    /* Toggle */
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-    }
-    
-    .toggle-row span { font-size: 13px; }
-    
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    
-    .toggle.active { background: var(--accent); }
-    
-    .toggle::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      transition: transform 0.2s ease;
-    }
-    
-    .toggle.active::after { transform: translateX(20px); }
-    
-    /* Preview Area */
-    .preview-area {
-      flex: 1;
-      background: #18181b;
-      overflow-y: auto;
-      padding: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    
-  /* Resume Preview */
-  .resume {
-  display: block;
-  width: 210mm;
-  min-height: 297mm;
-  padding: 15mm;
-  background: white;
-  color: #000;
-  transform: scale(0.6);
-  transform-origin: top center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
-  box-sizing: border-box;
-  }
-  
-  .resume * { box-sizing: border-box; }
-  .resume h1, .resume h2, .resume h3, .resume h4, .resume p { margin: 0; padding: 0; }
-  .resume aside { display: block; }
-  .resume main { display: block !important; }
-  .resume main > * { display: block !important; width: 100% !important; }
-  .resume p { margin: 0; }
-  
-  /* Print Styles */
-    @media print {
-      header, .sidebar, .sidebar-right { display: none !important; }
-      main { display: block !important; }
-      .preview-area { 
-        padding: 0 !important; 
-        background: white !important;
-        overflow: visible !important;
-      }
-      .resume { 
-        transform: none !important; 
-        box-shadow: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-      }
-    }
-    
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .sidebar { width: 300px; }
-      .sidebar-right { width: 240px; }
-    }
-    
-    /* Mobile / small screens */
-    @media (max-width: 900px) {
-      main { flex-direction: column; }
-      header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
-      .header-actions { width: 100%; justify-content: flex-end; gap: 8px; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-      .mobile-menu { display: inline-flex; align-items: center; justify-content: center; width:40px; height:40px; font-size:20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
-      .mobile-right-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; font-size:16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
 
-      .sidebar, .sidebar-right {
-        position: fixed;
-        top: 64px;
-        bottom: 0;
-        width: 86%;
-        max-width: 420px;
-        background: var(--bg-secondary);
-        z-index: 200;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-        transform: translateX(-110%);
-        transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
-        will-change: transform;
-      }
+/* ────────────────── TOP BAR ────────────────── */
+.topbar{
+  height:52px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  flex-shrink:0;
+  z-index:50;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:15px;
+  letter-spacing:0.3px;
+}
+.logo-badge{
+  background:var(--blue);
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  padding:4px 7px;
+  border-radius:5px;
+  letter-spacing:0.5px;
+}
+.topbar-actions{display:flex;gap:6px;align-items:center;}
 
-      .sidebar-right { right: 0; left: auto; transform: translateX(110%); }
+.btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 13px;border-radius:7px;font-size:12.5px;
+  font-weight:600;cursor:pointer;border:1px solid var(--border2);
+  background:transparent;color:var(--text);font-family:'DM Sans',sans-serif;
+  transition:all 0.15s;white-space:nowrap;text-decoration:none;
+}
+.btn:hover{background:var(--surface2);border-color:#3a3a3a;}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn-primary:hover{background:var(--blue-hover);border-color:var(--blue-hover);}
+.btn-ghost{border:none;color:var(--muted);}
+.btn-ghost:hover{background:var(--surface2);color:var(--text);}
 
-      body.show-left-sidebar .sidebar { transform: translateX(0); }
-      body.show-right-sidebar .sidebar-right { transform: translateX(0); }
+/* ────────────────── MAIN LAYOUT ────────────────── */
+.layout{
+  display:flex;
+  flex:1;
+  overflow:hidden;
+}
 
-      .mobile-overlay { display: none; position: fixed; inset: 64px 0 0 0; background: rgba(0,0,0,0.45); z-index:150; }
-      body.show-left-sidebar .mobile-overlay, body.show-right-sidebar .mobile-overlay { display: block; }
+/* ────────────────── SIDEBAR ────────────────── */
+.sidebar{
+  width:310px;
+  min-width:310px;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 
-      .tabs .tab { font-size: 16px; padding: 8px; }
-      .photo-preview { width: 48px; height: 48px; }
-      .photo-upload button { padding: 8px; }
-      .grid-2 { grid-template-columns: 1fr; }
+/* tabs */
+.tabs{
+  display:flex;
+  border-bottom:1px solid var(--border);
+  background:var(--bg);
+  flex-shrink:0;
+}
+.tab{
+  flex:1;padding:11px 4px;
+  background:none;border:none;
+  color:var(--faint);font-size:16px;
+  cursor:pointer;border-bottom:2px solid transparent;
+  transition:all 0.15s;
+}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--surface);}
+.tab:hover:not(.active){color:var(--muted);background:var(--surface2);}
+.tab span{display:block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;color:inherit;}
 
-      .resume {
-        transform: none;
-        width: 100%;
-        max-width: 900px;
-        padding: 10mm;
-        box-shadow: none;
-        font-size: 14px;
-      }
+.tab-body{flex:1;overflow-y:auto;padding:18px;}
+.tab-body::-webkit-scrollbar{width:3px;}
+.tab-body::-webkit-scrollbar-thumb{background:#222;border-radius:2px;}
 
-      button { padding: 10px 12px; font-size: 15px; min-height:44px; }
-      input, textarea, select { padding: 12px; font-size: 15px; }
-      .add-btn { width: 100%; }
-    }
-    
-    input[type="file"] { display: none; }
-  </style>
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* section heading inside panel */
+.slabel{
+  font-size:9.5px;font-weight:700;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--blue);
+  margin:18px 0 10px;border-left:2px solid var(--blue);padding-left:7px;
+}
+.slabel:first-child{margin-top:0;}
+.slabel-row{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px;}
+.slabel-row:first-child{margin-top:0;}
+.slabel-row .slabel{margin:0;border:none;padding:0;}
+
+/* form fields */
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:10.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px;}
+.field input,.field textarea,.field select{
+  width:100%;background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text);padding:8px 11px;border-radius:6px;
+  font-size:12.5px;font-family:'DM Sans',sans-serif;outline:none;
+  transition:border-color 0.15s;
+}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue);}
+.field input::placeholder,.field textarea::placeholder{color:#333;}
+.field textarea{resize:vertical;min-height:65px;line-height:1.5;}
+.field select option{background:var(--surface2);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* entry cards */
+.card{
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:8px;padding:13px;margin-bottom:8px;position:relative;
+}
+.card:hover{border-color:var(--blue-border);}
+.card .field{margin-bottom:7px;}
+.card .field:last-child{margin-bottom:0;}
+.card-del{
+  position:absolute;top:9px;right:9px;
+  background:none;border:none;color:var(--faint);
+  font-size:13px;cursor:pointer;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;border-radius:4px;
+}
+.card-del:hover{color:#f87171;background:rgba(248,113,113,0.1);}
+.add-row{
+  width:100%;padding:8px;background:none;
+  border:1px dashed var(--border2);color:var(--faint);
+  border-radius:6px;font-size:12px;cursor:pointer;
+  transition:all 0.15s;margin-top:6px;font-family:'DM Sans',sans-serif;
+}
+.add-row:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-dim);}
+
+/* photo upload */
+.photo-zone{
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+}
+.photo-circle{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--surface2);border:2px dashed var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;overflow:hidden;flex-shrink:0;
+  transition:border-color 0.15s;
+}
+.photo-circle:hover{border-color:var(--blue);}
+.photo-circle img{width:100%;height:100%;object-fit:cover;}
+
+/* skills */
+.skills-cloud{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;min-height:8px;}
+.skill-chip{
+  background:var(--blue-dim);border:1px solid var(--blue-border);
+  color:#93c5fd;padding:3px 9px;border-radius:20px;font-size:11.5px;
+  display:flex;align-items:center;gap:4px;
+}
+.skill-del{cursor:pointer;color:var(--faint);font-size:9px;transition:color 0.15s;}
+.skill-del:hover{color:#f87171;}
+.skill-add-row{display:flex;gap:6px;}
+.skill-add-row input{flex:1;}
+
+/* color swatches */
+.swatches{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.swatch{
+  width:26px;height:26px;border-radius:5px;
+  cursor:pointer;border:2px solid transparent;transition:all 0.15s;flex-shrink:0;
+}
+.swatch.active{border-color:#fff;box-shadow:0 0 0 2px var(--bg);}
+
+input[type="range"]{
+  width:100%;-webkit-appearance:none;
+  background:#1f1f1f;height:4px;border-radius:2px;outline:none;margin:6px 0;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;
+  background:var(--blue);border-radius:50%;cursor:pointer;
+}
+
+/* toggles */
+.tog-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--border);
+}
+.tog-row:last-child{border-bottom:none;}
+.tog-row > span{font-size:12.5px;color:#ccc;}
+.tog{
+  width:38px;height:20px;background:#2a2a2a;border-radius:10px;
+  cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0;
+}
+.tog.on{background:var(--blue);}
+.tog::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:16px;height:16px;background:#fff;border-radius:50%;
+  transition:transform 0.2s;
+}
+.tog.on::after{transform:translateX(18px);}
+
+/* ────────────────── PREVIEW ────────────────── */
+.preview{
+  flex:1;background:#1a1a1a;overflow-y:auto;
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 20px;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(37,99,235,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 90%, rgba(37,99,235,0.03) 0%, transparent 50%);
+}
+.preview-label{
+  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--faint);margin-bottom:14px;align-self:flex-start;padding-left:4px;
+}
+
+.paper{
+  width:794px;
+  background:#fff;
+  color:#111;
+  font-family:'DM Sans',sans-serif;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.06),0 20px 60px rgba(0,0,0,0.5);
+  transform:scale(0.63);
+  transform-origin:top center;
+  flex-shrink:0;
+  /* keeps layout from collapsing after scale */
+  margin-bottom: calc((297mm * 0.63) - 297mm);
+}
+
+/* ────────────────── PRINT ────────────────── */
+@media print{
+  .topbar,.sidebar{display:none!important;}
+  .layout{display:block!important;height:auto!important;}
+  .preview{padding:0!important;background:#fff!important;display:block!important;}
+  .paper{transform:none!important;box-shadow:none!important;width:100%!important;margin:0!important;}
+  .preview-label{display:none!important;}
+}
+
+/* ────────────────── RESPONSIVE ────────────────── */
+@media(max-width:960px){
+  body{overflow:auto;}
+  .layout{flex-direction:column;overflow:visible;}
+  .sidebar{width:100%;min-width:unset;max-height:52vh;overflow-y:auto;}
+  .paper{transform:scale(0.4);transform-origin:top center;}
+  .preview{padding:12px 6px;}
+}
+</style>
 </head>
 <body>
-  <header>
-    <button class="mobile-menu" aria-label="Open left menu" onclick="toggleLeftSidebar()">&#9776;</button>
-    <div class="logo">
-      <div class="logo-icon">ARB</div>
-      <span>APNA RESUME BUILDER</span>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-badge">ARB</div>
+    ApnaResumeBuilder
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="doSave(this)">💾 Save</button>
+    <button class="btn" onclick="doExport()">📤 Export JSON</button>
+    <button class="btn btn-primary" onclick="window.print()">⬇ Download PDF</button>
+    <a href="index.html" class="btn btn-primary">🏠 Home</a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Tab bar -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('personal')">👤<span>Info</span></button>
+      <button class="tab" onclick="switchTab('experience')">💼<span>Work</span></button>
+      <button class="tab" onclick="switchTab('education')">🎓<span>Edu</span></button>
+      <button class="tab" onclick="switchTab('projects')">🚀<span>Projects</span></button>
+      <button class="tab" onclick="switchTab('design')">🎨<span>Design</span></button>
     </div>
-    <div class="header-actions">
-      <!-- Home button only -->
-      <a href="#" class="home-btn">🏠 Home</a>
 
-      <button onclick="saveToStorage()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Save
-      </button>
-      <button onclick="exportJson()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Export
-      </button>
-      <button onclick="document.getElementById('jsonInput').click()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Import
-      </button>
-      <input type="file" id="jsonInput" accept=".json" onchange="importJson(event)">
-      <button class="primary" onclick="window.print()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        PDF
-      </button>
-      <button class="mobile-right-toggle" aria-label="Open right menu" onclick="toggleRightSidebar()">⚙️</button>
+    <!-- PERSONAL -->
+    <div class="tab-body panel active" id="pan-personal">
+      <div class="slabel">Profile Photo</div>
+      <div class="photo-zone">
+        <div class="photo-circle" onclick="document.getElementById('photoFile').click()">
+          <span id="photoEmoji">📷</span>
+          <img id="photoImg" style="display:none"/>
+        </div>
+        <div style="flex:1;">
+          <button class="btn" style="width:100%;justify-content:center;" onclick="document.getElementById('photoFile').click()">Upload Photo</button>
+          <input type="file" id="photoFile" accept="image/*" style="display:none" onchange="loadPhoto(event)"/>
+        </div>
+      </div>
+
+      <div class="slabel">Basic Info</div>
+      <div class="field"><label>Full Name</label><input id="i-name" placeholder="e.g. Arjun Sharma" oninput="render()"/></div>
+      <div class="field"><label>Job Title / Role</label><input id="i-role" placeholder="e.g. Full Stack Developer" oninput="render()"/></div>
+
+      <div class="slabel">Contact Details</div>
+      <div class="g2">
+        <div class="field"><label>Email</label><input id="i-email" placeholder="arjun@gmail.com" oninput="render()"/></div>
+        <div class="field"><label>Phone</label><input id="i-phone" placeholder="+91 98765 43210" oninput="render()"/></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label>Location</label><input id="i-location" placeholder="Jaipur, Rajasthan" oninput="render()"/></div>
+        <div class="field"><label>LinkedIn</label><input id="i-linkedin" placeholder="linkedin.com/in/arjun" oninput="render()"/></div>
+      </div>
+      <div class="field"><label>Website / Portfolio</label><input id="i-website" placeholder="arjunsharma.dev" oninput="render()"/></div>
+
+      <div class="slabel">Professional Summary</div>
+      <div class="field"><textarea id="i-summary" placeholder="Write a short professional summary..." oninput="render()"></textarea></div>
+
+      <div class="slabel">Skills</div>
+      <div class="skills-cloud" id="skillCloud"></div>
+      <div class="skill-add-row">
+        <input class="field" style="margin:0;" id="skillInput" placeholder="Type a skill & press Enter" onkeydown="if(event.key==='Enter')addSkill()"/>
+        <button class="btn btn-primary" style="padding:8px 12px;" onclick="addSkill()">+</button>
+      </div>
     </div>
-  </header>
 
-  <main>
-    <aside class="sidebar">
-      <div class="tabs">
-        <button class="tab active" onclick="switchTab('personal')">&#128100;</button>
-        <button class="tab" onclick="switchTab('experience')">&#128188;</button>
-        <button class="tab" onclick="switchTab('education')">&#127891;</button>
-        <button class="tab" onclick="switchTab('extra')">&#127942;</button>
+    <!-- EXPERIENCE -->
+    <div class="tab-body panel" id="pan-experience">
+      <div class="slabel-row">
+        <div class="slabel">Work Experience</div>
+        <button class="btn btn-primary" style="padding:5px 10px;font-size:11px;" onclick="addExp()">+ Add</button>
+      </div>
+      <div id="expCards"></div>
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="tab-body panel" id="pan-education">
+      <div class="slabel-row">
+        <div class="slabel">Education</div>
+        <button class="btn btn-primary" style="padding:5px 10px;font-size:11px;" onclick="addEdu()">+ Add</button>
+      </div>
+      <div id="eduCards"></div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="tab-body panel" id="pan-projects">
+      <div class="slabel-row">
+        <div class="slabel">Projects</div>
+        <button class="btn btn-primary" style="padding:5px 10px;font-size:11px;" onclick="addProj()">+ Add</button>
+      </div>
+      <div id="projCards"></div>
+    </div>
+
+    <!-- DESIGN -->
+    <div class="tab-body panel" id="pan-design">
+      <div class="slabel">Template Style</div>
+      <div class="field">
+        <select id="d-template" onchange="render()">
+          <option value="modern">Modern — Two Column</option>
+          <option value="classic">Classic — Single Column</option>
+          <option value="minimal">Minimal — Centered Header</option>
+          <option value="bold">Bold — Full Header Banner</option>
+        </select>
       </div>
 
-      <!-- Personal Tab -->
-      <div id="tab-personal" class="tab-content active">
-        <div class="section-header">Personal Info</div>
-        
-        <div class="photo-upload">
-          <div class="photo-preview" onclick="document.getElementById('photoInput').click()">
-            <span id="photoPlaceholder">&#128100;</span>
-            <img id="photoImg" style="display:none;">
-          </div>
-          <button onclick="document.getElementById('photoInput').click()" style="flex:1;">Upload Photo</button>
-          <input type="file" id="photoInput" accept="image/*" onchange="uploadPhoto(event)">
-        </div>
-
-        <input type="text" id="name" placeholder="e.g. Arjun Sharma" oninput="updateData('name', this.value)">
-        <input type="text" id="role" placeholder="e.g. Full Stack Developer" oninput="updateData('role', this.value)">
-
-        <div class="section-header">Contact</div>
-        <div class="grid-2">
-          <input type="email" id="email" placeholder="e.g. arjun.sharma@gmail.com" oninput="updateData('email', this.value)">
-          <input type="tel" id="phone" placeholder="e.g. +91 98765 43210" oninput="updateData('phone', this.value)">
-        </div>
-        <div class="grid-2">
-          <input type="text" id="location" placeholder="e.g. Bengaluru, Karnataka" oninput="updateData('location', this.value)">
-          <input type="text" id="linkedin" placeholder="e.g. linkedin.com/in/arjunsharma" oninput="updateData('linkedin', this.value)">
-        </div>
-        <input type="text" id="website" placeholder="e.g. arjunsharma.dev" oninput="updateData('website', this.value)">
-
-        <div class="section-header">Summary</div>
-        <textarea id="summary" placeholder="e.g. Results-driven developer with 5+ years of experience building scalable web apps..." rows="4" oninput="updateData('summary', this.value)"></textarea>
-
-        <div class="section-header">Skills</div>
-        <input type="text" id="skills" placeholder="e.g. JavaScript, React, Python, SQL" oninput="updateSkills(this.value)">
+      <div class="slabel">Accent Color</div>
+      <div class="swatches" id="swatches"></div>
+      <div class="field"><label>Custom Color</label>
+        <input type="color" id="d-color" value="#2563eb" onchange="setColor(this.value)" style="height:34px;cursor:pointer;"/>
       </div>
 
-      <!-- Experience Tab -->
-      <div id="tab-experience" class="tab-content">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="section-header" style="margin:0;">Experience</div>
-          <button onclick="addExperience()">+ Add</button>
-        </div>
-        <div id="experienceList"></div>
+      <div class="slabel">Font Size — <span id="fsVal">13</span>px</div>
+      <input type="range" id="d-fs" min="10" max="16" value="13" oninput="document.getElementById('fsVal').textContent=this.value;render()"/>
+
+      <div class="slabel">Show / Hide Sections</div>
+      <div class="tog-row"><span>Profile Photo</span><div class="tog" id="t-photo" onclick="togOpt('photo')"></div></div>
+      <div class="tog-row"><span>Summary</span><div class="tog on" id="t-summary" onclick="togOpt('summary')"></div></div>
+      <div class="tog-row"><span>Skills</span><div class="tog on" id="t-skills" onclick="togOpt('skills')"></div></div>
+      <div class="tog-row"><span>Projects</span><div class="tog on" id="t-projects" onclick="togOpt('projects')"></div></div>
+
+      <div style="margin-top:22px;">
+        <button class="btn" style="width:100%;justify-content:center;border-color:var(--danger);color:#f87171;"
+          onclick="if(confirm('Reset all resume data?')){localStorage.removeItem('arb_v2');location.reload();}">🗑 Reset Everything</button>
       </div>
+    </div>
 
-      <!-- Education Tab -->
-      <div id="tab-education" class="tab-content">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="section-header" style="margin:0;">Education</div>
-          <button onclick="addEducation()">+ Add</button>
-        </div>
-        <div id="educationList"></div>
-      </div>
+  </div><!-- /sidebar -->
 
-      <!-- Extra Tab -->
-      <div id="tab-extra" class="tab-content">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div class="section-header" style="margin:0;">Projects</div>
-          <button onclick="addProject()">+ Add</button>
-        </div>
-        <div id="projectsList"></div>
+  <!-- PREVIEW PANE -->
+  <div class="preview">
+    <div class="preview-label">Live Preview — A4</div>
+    <div class="paper" id="paper"></div>
+  </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
-          <div class="section-header" style="margin:0;">Custom Sections</div>
-          <button onclick="addCustom()">+ Add</button>
-        </div>
-        <div id="customList"></div>
-      </div>
-    </aside>
+</div><!-- /layout -->
 
-    <section class="preview-area">
-      <div class="resume" id="resumePreview"></div>
-    </section>
+<script>
+/* ═══════════════════════════ STATE ═══════════════════════════ */
+var D = {
+  name:"Arjun Sharma", role:"Full Stack Developer",
+  email:"arjun.sharma@gmail.com", phone:"+91 98765 43210",
+  location:"Jaipur, Rajasthan", linkedin:"linkedin.com/in/arjunsharma", website:"arjunsharma.dev",
+  summary:"Results-driven Full Stack Developer with 5+ years of experience building scalable web applications. Passionate about clean code, performance optimisation, and delivering exceptional user experiences.",
+  skills:["JavaScript","React","Node.js","Python","MongoDB","AWS","Git","REST APIs"],
+  exp:[
+    {id:1,title:"Senior Full Stack Developer",company:"Infosys Ltd.",period:"Jan 2022 – Present",desc:"Led development of core platform features used by 500K+ users daily. Improved application performance by 40% via code refactoring and Redis caching strategies."},
+    {id:2,title:"Software Engineer",company:"Wipro Technologies",period:"Jul 2019 – Dec 2021",desc:"Built and maintained microservices architecture on AWS. Collaborated with cross-functional teams to deliver 3 major product releases on schedule."}
+  ],
+  edu:[{id:1,degree:"B.Tech Computer Science",school:"IIT Bombay",year:"2019",grade:"8.5 CGPA"}],
+  proj:[{id:1,name:"E-Commerce Dashboard",tech:"React, Node.js, MongoDB",desc:"Full-featured admin dashboard with real-time analytics and order tracking for 10K+ daily transactions.",link:"github.com/arjunsharma/ecom"}],
+  photo:"",
+  color:"#2563eb", fs:13, template:"modern",
+  showPhoto:false, showSummary:true, showSkills:true, showProjects:true
+};
 
-    <aside class="sidebar sidebar-right">
-      <div class="section-header">Template</div>
-      <select id="template" onchange="updateData('template', this.value)">
-        <option value="modern">Modern Professional</option>
-        <option value="minimal">Minimal Centered</option>
-        <option value="classic">Classic Corporate</option>
-        <option value="creative">Creative Bold</option>
-        <option value="compact">Compact Dense</option>
-      </select>
+var PALETTE = ["#2563eb","#16a34a","#dc2626","#7c3aed","#ea580c","#0891b2","#be185d","#374151"];
 
-      <div class="section-header">Theme Color</div>
-      <div class="color-grid" id="colorGrid"></div>
-      <input type="color" id="customColor" onchange="updateData('color', this.value)">
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+function init(){
+  var saved = localStorage.getItem("arb_v2");
+  if(saved) try{ D = Object.assign({},D,JSON.parse(saved)); }catch(e){}
+  // Populate form
+  ["name","role","email","phone","location","linkedin","website","summary"].forEach(function(f){
+    var el=document.getElementById("i-"+f); if(el) el.value=D[f]||"";
+  });
+  document.getElementById("d-template").value = D.template;
+  document.getElementById("d-fs").value = D.fs;
+  document.getElementById("fsVal").textContent = D.fs;
+  document.getElementById("d-color").value = D.color;
+  ["photo","summary","skills","projects"].forEach(function(k){
+    var t=document.getElementById("t-"+k);
+    if(t) t.className="tog"+(D["show"+ucfirst(k)]?" on":"");
+  });
+  if(D.photo){
+    document.getElementById("photoImg").src=D.photo;
+    document.getElementById("photoImg").style.display="block";
+    document.getElementById("photoEmoji").style.display="none";
+  }
+  buildPalette();
+  renderSkills();
+  renderCards();
+  render();
+}
 
-      <div class="section-header">Font Family</div>
-      <select id="fontFamily" onchange="updateData('fontFamily', this.value)">
-        <option value="system-ui, -apple-system, sans-serif">System Default</option>
-        <option value="Georgia, Cambria, serif">Georgia (Serif)</option>
-        <option value="Palatino, 'Palatino Linotype', serif">Palatino (Serif)</option>
-        <option value="Arial, Helvetica, sans-serif">Arial (Sans)</option>
-        <option value="'Trebuchet MS', sans-serif">Trebuchet (Sans)</option>
-        <option value="'Courier New', Courier, monospace">Courier (Mono)</option>
-      </select>
+function ucfirst(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+function esc(t){ if(!t)return""; return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
-      <div class="section-header">Font Size: <span id="fontSizeLabel">12</span>px</div>
-      <input type="range" id="fontSize" min="10" max="16" step="1" value="12" oninput="updateFontSize(this.value)">
+/* ═══════════════════════════ TABS ═══════════════════════════ */
+function switchTab(name){
+  var order=["personal","experience","education","projects","design"];
+  document.querySelectorAll(".tab").forEach(function(b,i){ b.classList.toggle("active",order[i]===name); });
+  document.querySelectorAll(".panel").forEach(function(p){ p.classList.toggle("active",p.id==="pan-"+name); });
+}
 
-      <div class="section-header">Visibility</div>
-      <div class="toggle-row">
-        <span>Show Photo</span>
-        <div class="toggle" id="togglePhoto" onclick="toggleOption('showPhoto')"></div>
-      </div>
-      <div class="toggle-row">
-        <span>Show Summary</span>
-        <div class="toggle active" id="toggleSummary" onclick="toggleOption('showSummary')"></div>
-      </div>
-      <div class="toggle-row">
-        <span>Show Projects</span>
-        <div class="toggle active" id="toggleProjects" onclick="toggleOption('showProjects')"></div>
-      </div>
+/* ═══════════════════════════ SKILLS ═══════════════════════════ */
+function addSkill(){
+  var inp=document.getElementById("skillInput"), v=inp.value.trim();
+  if(v && !D.skills.includes(v)){ D.skills.push(v); renderSkills(); render(); }
+  inp.value="";
+}
+function delSkill(i){ D.skills.splice(i,1); renderSkills(); render(); }
+function renderSkills(){
+  document.getElementById("skillCloud").innerHTML = D.skills.map(function(s,i){
+    return '<span class="skill-chip">'+esc(s)+'<span class="skill-del" onclick="delSkill('+i+')">✕</span></span>';
+  }).join("");
+}
 
-      <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--border);">
-        <button class="danger" style="width:100%; justify-content:center;" onclick="resetData()">Reset to Defaults</button>
-      </div>
-    </aside>
-  </main>
-  <div id="mobileOverlay" class="mobile-overlay" onclick="closeDrawers()" aria-hidden="true"></div>
+/* ═══════════════════════════ EXPERIENCE ═══════════════════════════ */
+function addExp(){ D.exp.push({id:Date.now(),title:"",company:"",period:"",desc:""}); renderCards(); }
+function delExp(id){ D.exp=D.exp.filter(function(e){return e.id!==id;}); renderCards(); render(); }
+function upExp(id,f,v){ D.exp.forEach(function(e){if(e.id===id)e[f]=v;}); render(); }
 
-  <script>
-    const defaultData = {
-      name: "Arjun Sharma",
-      role: "Full Stack Developer",
-      email: "arjun.sharma@gmail.com",
-      phone: "+91 98765 43210",
-      location: "Bengaluru, Karnataka",
-      linkedin: "linkedin.com/in/arjunsharma",
-      website: "arjunsharma.dev",
-      summary: "Results-driven Full Stack Developer with 5+ years of experience building scalable web applications. Passionate about clean code, performance optimization, and delivering exceptional user experiences.",
-      skills: ["JavaScript", "React", "Node.js", "Python", "SQL", "Git"],
-      experience: [
-        { id: "1", title: "Senior Full Stack Developer", company: "Infosys Ltd.", year: "2022 – Present", description: "Led development of core platform features used by 500K+ users. Improved application performance by 40% through code refactoring and caching strategies." },
-        { id: "2", title: "Software Engineer", company: "Wipro Technologies", year: "2019 – 2022", description: "Built and maintained microservices architecture. Collaborated with cross-functional teams to deliver 3 major product releases on schedule." }
-      ],
-      education: [
-        { id: "1", degree: "B.Tech Computer Science", school: "IIT Bombay", year: "2019" }
-      ],
-      projects: [
-        { id: "1", name: "E-Commerce Dashboard", tech: "React, Node.js, MongoDB", description: "Full-featured admin dashboard with real-time analytics, inventory management, and order tracking for online stores.", link: "github.com/arjunsharma/ecommerce-dashboard" }
-      ],
-      custom: [],
-      photo: "",
-      color: "#2563eb",
-      fontSize: 12,
-      fontFamily: "system-ui, -apple-system, sans-serif",
-      template: "modern",
-      showPhoto: false,
-      showSummary: true,
-      showProjects: true
-    };
+/* ═══════════════════════════ EDUCATION ═══════════════════════════ */
+function addEdu(){ D.edu.push({id:Date.now(),degree:"",school:"",year:"",grade:""}); renderCards(); }
+function delEdu(id){ D.edu=D.edu.filter(function(e){return e.id!==id;}); renderCards(); render(); }
+function upEdu(id,f,v){ D.edu.forEach(function(e){if(e.id===id)e[f]=v;}); render(); }
 
-    const colors = ["#2563eb", "#16a34a", "#dc2626", "#7c3aed", "#ea580c", "#0891b2", "#000000"];
-    
-    let data = JSON.parse(JSON.stringify(defaultData));
+/* ═══════════════════════════ PROJECTS ═══════════════════════════ */
+function addProj(){ D.proj.push({id:Date.now(),name:"",tech:"",desc:"",link:""}); renderCards(); }
+function delProj(id){ D.proj=D.proj.filter(function(p){return p.id!==id;}); renderCards(); render(); }
+function upProj(id,f,v){ D.proj.forEach(function(p){if(p.id===id)p[f]=v;}); render(); }
 
-    function init() {
-      const saved = localStorage.getItem("resumeData");
-      if (saved) {
-        try { data = { ...defaultData, ...JSON.parse(saved) }; } catch(e) {}
-      }
-      populateForm();
-      renderColorGrid();
-      renderLists();
-      renderPreview();
-    }
+/* ═══════════════════════════ RENDER CARDS ═══════════════════════════ */
+function renderCards(){
+  document.getElementById("expCards").innerHTML = D.exp.map(function(e){
+    return '<div class="card">'
+      +'<button class="card-del" onclick="delExp('+e.id+')">✕</button>'
+      +'<div class="field"><label>Job Title</label><input value="'+esc(e.title)+'" placeholder="Senior Developer" oninput="upExp('+e.id+',\'title\',this.value)"/></div>'
+      +'<div class="field"><label>Company</label><input value="'+esc(e.company)+'" placeholder="Infosys, TCS, Wipro…" oninput="upExp('+e.id+',\'company\',this.value)"/></div>'
+      +'<div class="field"><label>Period</label><input value="'+esc(e.period)+'" placeholder="Jan 2022 – Present" oninput="upExp('+e.id+',\'period\',this.value)"/></div>'
+      +'<div class="field"><label>Description</label><textarea oninput="upExp('+e.id+',\'desc\',this.value)" placeholder="Key responsibilities and achievements…">'+esc(e.desc)+'</textarea></div>'
+      +'</div>';
+  }).join('')+'<button class="add-row" onclick="addExp()">＋ Add Another Experience</button>';
 
-    function populateForm() {
-      document.getElementById('name').value = data.name;
-      document.getElementById('role').value = data.role;
-      document.getElementById('email').value = data.email;
-      document.getElementById('phone').value = data.phone;
-      document.getElementById('location').value = data.location;
-      document.getElementById('linkedin').value = data.linkedin;
-      document.getElementById('website').value = data.website;
-      document.getElementById('summary').value = data.summary;
-      document.getElementById('skills').value = data.skills.join(", ");
-      document.getElementById('template').value = data.template;
-      document.getElementById('fontFamily').value = data.fontFamily;
-      document.getElementById('fontSize').value = data.fontSize;
-      document.getElementById('fontSizeLabel').textContent = data.fontSize;
-      document.getElementById('customColor').value = data.color;
-      document.getElementById('togglePhoto').classList.toggle('active', data.showPhoto);
-      document.getElementById('toggleSummary').classList.toggle('active', data.showSummary);
-      document.getElementById('toggleProjects').classList.toggle('active', data.showProjects);
-      if (data.photo) {
-        document.getElementById('photoImg').src = data.photo;
-        document.getElementById('photoImg').style.display = 'block';
-        document.getElementById('photoPlaceholder').style.display = 'none';
-      }
-    }
+  document.getElementById("eduCards").innerHTML = D.edu.map(function(e){
+    return '<div class="card">'
+      +'<button class="card-del" onclick="delEdu('+e.id+')">✕</button>'
+      +'<div class="field"><label>Degree / Qualification</label><input value="'+esc(e.degree)+'" placeholder="B.Tech Computer Science" oninput="upEdu('+e.id+',\'degree\',this.value)"/></div>'
+      +'<div class="field"><label>University / School</label><input value="'+esc(e.school)+'" placeholder="IIT Bombay, NIT Trichy…" oninput="upEdu('+e.id+',\'school\',this.value)"/></div>'
+      +'<div class="g2">'
+      +'<div class="field"><label>Year</label><input value="'+esc(e.year)+'" placeholder="2019" oninput="upEdu('+e.id+',\'year\',this.value)"/></div>'
+      +'<div class="field"><label>Grade / CGPA</label><input value="'+esc(e.grade)+'" placeholder="8.5 CGPA" oninput="upEdu('+e.id+',\'grade\',this.value)"/></div>'
+      +'</div></div>';
+  }).join('')+'<button class="add-row" onclick="addEdu()">＋ Add Another Education</button>';
 
-    function renderColorGrid() {
-      const grid = document.getElementById('colorGrid');
-      grid.innerHTML = colors.map(c => 
-        `<button class="color-btn ${data.color === c ? 'active' : ''}" 
-                 style="background:${c}; ${c === '#000000' ? 'border:1px solid rgba(255,255,255,0.2)' : ''}" 
-                 onclick="selectColor('${c}')"></button>`
-      ).join('');
-    }
+  document.getElementById("projCards").innerHTML = D.proj.map(function(p){
+    return '<div class="card">'
+      +'<button class="card-del" onclick="delProj('+p.id+')">✕</button>'
+      +'<div class="field"><label>Project Name</label><input value="'+esc(p.name)+'" placeholder="E-Commerce Dashboard" oninput="upProj('+p.id+',\'name\',this.value)"/></div>'
+      +'<div class="field"><label>Tech Stack</label><input value="'+esc(p.tech)+'" placeholder="React, Node.js, MongoDB" oninput="upProj('+p.id+',\'tech\',this.value)"/></div>'
+      +'<div class="field"><label>Description</label><textarea oninput="upProj('+p.id+',\'desc\',this.value)" placeholder="What you built and its impact…">'+esc(p.desc)+'</textarea></div>'
+      +'<div class="field"><label>Link (optional)</label><input value="'+esc(p.link)+'" placeholder="github.com/yourproject" oninput="upProj('+p.id+',\'link\',this.value)"/></div>'
+      +'</div>';
+  }).join('')+'<button class="add-row" onclick="addProj()">＋ Add Another Project</button>';
+}
 
-    function selectColor(c) {
-      data.color = c;
-      document.getElementById('customColor').value = c;
-      renderColorGrid();
-      renderPreview();
-    }
+/* ═══════════════════════════ PHOTO ═══════════════════════════ */
+function loadPhoto(e){
+  var f=e.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    D.photo=ev.target.result; D.showPhoto=true;
+    document.getElementById("photoImg").src=D.photo;
+    document.getElementById("photoImg").style.display="block";
+    document.getElementById("photoEmoji").style.display="none";
+    document.getElementById("t-photo").className="tog on";
+    render();
+  };
+  r.readAsDataURL(f);
+}
 
-    function updateData(key, value) {
-      data[key] = value;
-      if (key === 'fontSize') document.getElementById('fontSizeLabel').textContent = value;
-      if (key === 'color') renderColorGrid();
-      renderPreview();
-    }
+/* ═══════════════════════════ DESIGN ═══════════════════════════ */
+function buildPalette(){
+  document.getElementById("swatches").innerHTML = PALETTE.map(function(c){
+    return '<div class="swatch'+(D.color===c?" active":"")+'" style="background:'+c+(c==='#374151'?';border:1px solid #555':'')+'" onclick="setColor(\''+c+'\')"></div>';
+  }).join("");
+}
+function setColor(c){ D.color=c; document.getElementById("d-color").value=c; buildPalette(); render(); }
+function togOpt(k){
+  var key="show"+ucfirst(k); D[key]=!D[key];
+  document.getElementById("t-"+k).className="tog"+(D[key]?" on":"");
+  render();
+}
 
-    function updateSkills(value) {
-      data.skills = value.split(",").map(s => s.trim()).filter(Boolean);
-      renderPreview();
-    }
+/* ═══════════════════════════ SYNC + SAVE ═══════════════════════════ */
+function sync(){
+  ["name","role","email","phone","location","linkedin","website","summary"].forEach(function(f){
+    var el=document.getElementById("i-"+f); if(el) D[f]=el.value;
+  });
+  D.fs = parseInt(document.getElementById("d-fs").value);
+  D.template = document.getElementById("d-template").value;
+}
+function doSave(btn){
+  sync(); localStorage.setItem("arb_v2",JSON.stringify(D));
+  btn.textContent="✅ Saved!"; setTimeout(function(){ btn.textContent="💾 Save"; },1600);
+}
+function doExport(){
+  sync();
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:"application/json"}));
+  a.download=(D.name||"resume").replace(/\s+/g,"-")+".json"; a.click();
+}
 
-    function updateFontSize(value) {
-      data.fontSize = parseInt(value);
-      document.getElementById('fontSizeLabel').textContent = value;
-      renderPreview();
-    }
+/* ═══════════════════════════ RENDER RESUME ═══════════════════════════ */
+function render(){
+  sync();
+  var c=D.color, fs=D.fs;
 
-    function toggleOption(key) {
-      data[key] = !data[key];
-      document.getElementById('toggle' + key.charAt(4).toUpperCase() + key.slice(5)).classList.toggle('active', data[key]);
-      renderPreview();
-    }
+  /* helpers */
+  function sh(t){
+    return '<div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:'+c
+      +';border-bottom:2px solid '+c+';padding-bottom:3px;margin:14px 0 9px;font-family:\'DM Sans\',sans-serif;">'+t+'</div>';
+  }
+  function shL(t){ // left-panel section heading (smaller)
+    return '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.8px;color:'+c
+      +';border-bottom:1px solid '+c+'44;padding-bottom:3px;margin:14px 0 8px;font-family:\'DM Sans\',sans-serif;">'+t+'</div>';
+  }
 
-    function switchTab(name) {
-      document.querySelectorAll('.tab').forEach((t, i) => {
-        t.classList.toggle('active', ['personal', 'experience', 'education', 'extra'][i] === name);
-      });
-      document.querySelectorAll('.tab-content').forEach(c => {
-        c.classList.toggle('active', c.id === 'tab-' + name);
-      });
-    }
+  var contactParts=[];
+  if(D.email)    contactParts.push("✉ "+esc(D.email));
+  if(D.phone)    contactParts.push("📞 "+esc(D.phone));
+  if(D.location) contactParts.push("📍 "+esc(D.location));
+  if(D.linkedin) contactParts.push("in "+esc(D.linkedin));
+  if(D.website)  contactParts.push("🌐 "+esc(D.website));
 
-    function generateId() { return Math.random().toString(36).substring(2, 9); }
+  var skillsBlock = D.showSkills && D.skills.length
+    ? '<div style="display:flex;flex-wrap:wrap;gap:4px;">'
+      + D.skills.map(function(s){
+          return '<span style="background:'+c+'1a;color:'+c+';border:1px solid '+c+'44;padding:2px 8px;border-radius:20px;font-size:'+(fs-2)+'px;font-weight:700;">'+esc(s)+'</span>';
+        }).join('') + '</div>'
+    : '';
 
-    function addExperience() {
-      data.experience.push({ id: generateId(), title: "Role", company: "Company", year: "Year", description: "Description..." });
-      renderLists(); renderPreview();
-    }
-    function updateExperience(index, field, value) { data.experience[index][field] = value; renderPreview(); }
-    function removeExperience(index) { data.experience.splice(index, 1); renderLists(); renderPreview(); }
+  var summaryBlock = D.showSummary && D.summary
+    ? '<p style="font-size:'+(fs-1)+'px;line-height:1.55;color:#555;margin:0;">'+esc(D.summary)+'</p>' : '';
 
-    function addEducation() {
-      data.education.push({ id: generateId(), degree: "Degree", school: "School", year: "Year" });
-      renderLists(); renderPreview();
-    }
-    function updateEducation(index, field, value) { data.education[index][field] = value; renderPreview(); }
-    function removeEducation(index) { data.education.splice(index, 1); renderLists(); renderPreview(); }
+  var expBlock = D.exp.map(function(e){
+    return '<div style="margin-bottom:12px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+      +'<strong style="font-size:'+fs+'px;color:#111;">'+esc(e.title)+'</strong>'
+      +'<span style="font-size:'+(fs-2)+'px;color:'+c+';white-space:nowrap;margin-left:8px;flex-shrink:0;">'+esc(e.period)+'</span>'
+      +'</div>'
+      +'<div style="font-size:'+(fs-1)+'px;color:'+c+';font-weight:600;margin-bottom:3px;">'+esc(e.company)+'</div>'
+      +'<p style="font-size:'+(fs-1)+'px;color:#555;line-height:1.45;margin:0;">'+esc(e.desc)+'</p>'
+      +'</div>';
+  }).join('');
 
-    function addProject() {
-      data.projects.push({ id: generateId(), name: "Project Name", tech: "Tech Stack", description: "Description...", link: "" });
-      renderLists(); renderPreview();
-    }
-    function updateProject(index, field, value) { data.projects[index][field] = value; renderPreview(); }
-    function removeProject(index) { data.projects.splice(index, 1); renderLists(); renderPreview(); }
+  var eduBlock = D.edu.map(function(e){
+    return '<div style="margin-bottom:10px;">'
+      +'<strong style="font-size:'+fs+'px;color:#111;display:block;">'+esc(e.degree)+'</strong>'
+      +'<div style="font-size:'+(fs-1)+'px;color:'+c+';font-weight:600;">'
+        +esc(e.school)+(e.year?' · '+esc(e.year):'')+(e.grade?' · '+esc(e.grade):'')
+      +'</div></div>';
+  }).join('');
 
-    function addCustom() {
-      data.custom.push({ id: generateId(), title: "Section Title", content: "Content here..." });
-      renderLists(); renderPreview();
-    }
-    function updateCustom(index, field, value) { data.custom[index][field] = value; renderPreview(); }
-    function removeCustom(index) { data.custom.splice(index, 1); renderLists(); renderPreview(); }
+  var projBlock = D.showProjects && D.proj.length
+    ? D.proj.map(function(p){
+        return '<div style="margin-bottom:10px;">'
+          +'<div style="display:flex;justify-content:space-between;align-items:baseline;">'
+          +'<strong style="font-size:'+fs+'px;color:#111;">'+esc(p.name)+'</strong>'
+          +'<span style="font-size:'+(fs-2)+'px;color:'+c+';margin-left:6px;">'+esc(p.tech)+'</span>'
+          +'</div>'
+          +'<p style="font-size:'+(fs-1)+'px;color:#555;line-height:1.45;margin:2px 0 0;">'+esc(p.desc)+'</p>'
+          +(p.link?'<div style="font-size:'+(fs-2)+'px;color:'+c+';margin-top:2px;">'+esc(p.link)+'</div>':'')
+          +'</div>';
+      }).join('') : '';
 
-    function renderLists() {
-      document.getElementById('experienceList').innerHTML = data.experience.map((e, i) => `
-        <div class="card" draggable="true" ondragstart="dragStart(event, 'experience', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'experience', ${i})">
-          <button class="remove-btn" onclick="removeExperience(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(e.title)}" placeholder="e.g. Senior Software Engineer" oninput="updateExperience(${i}, 'title', this.value)">
-          <input type="text" value="${escapeHtml(e.company)}" placeholder="e.g. Infosys, TCS, Wipro" oninput="updateExperience(${i}, 'company', this.value)">
-          <input type="text" value="${escapeHtml(e.year)}" placeholder="e.g. Jan 2022 – Present" oninput="updateExperience(${i}, 'year', this.value)">
-          <textarea placeholder="Describe your responsibilities and achievements..." oninput="updateExperience(${i}, 'description', this.value)">${escapeHtml(e.description)}</textarea>
-        </div>
-      `).join('');
+  var photoEl = D.showPhoto && D.photo
+    ? '<img src="'+D.photo+'" style="width:78px;height:78px;border-radius:50%;object-fit:cover;border:3px solid '+c+';float:right;margin:0 0 10px 16px;"/>'
+    : '';
 
-      document.getElementById('educationList').innerHTML = data.education.map((e, i) => `
-        <div class="card" draggable="true" ondragstart="dragStart(event, 'education', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'education', ${i})">
-          <button class="remove-btn" onclick="removeEducation(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(e.degree)}" placeholder="e.g. B.Tech Computer Science" oninput="updateEducation(${i}, 'degree', this.value)">
-          <input type="text" value="${escapeHtml(e.school)}" placeholder="e.g. IIT Bombay, NIT Trichy, VTU" oninput="updateEducation(${i}, 'school', this.value)">
-          <input type="text" value="${escapeHtml(e.year)}" placeholder="e.g. 2020" oninput="updateEducation(${i}, 'year', this.value)">
-        </div>
-      `).join('');
+  var html = "";
 
-      document.getElementById('projectsList').innerHTML = data.projects.map((p, i) => `
-        <div class="card" draggable="true" ondragstart="dragStart(event, 'projects', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'projects', ${i})">
-          <button class="remove-btn" onclick="removeProject(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(p.name)}" placeholder="e.g. E-Commerce Dashboard" oninput="updateProject(${i}, 'name', this.value)">
-          <input type="text" value="${escapeHtml(p.tech)}" placeholder="e.g. React, Node.js, MongoDB" oninput="updateProject(${i}, 'tech', this.value)">
-          <textarea placeholder="Describe what you built and its impact..." oninput="updateProject(${i}, 'description', this.value)">${escapeHtml(p.description)}</textarea>
-          <input type="text" value="${escapeHtml(p.link)}" placeholder="e.g. github.com/yourname/project" oninput="updateProject(${i}, 'link', this.value)">
-        </div>
-      `).join('');
+  /* ── MODERN ── */
+  if(D.template==="modern"){
+    html='<div style="display:grid;grid-template-columns:168px 1fr;min-height:297mm;">'
+      // left col
+      +'<div style="background:'+c+'0c;padding:22px 14px;border-right:2px solid '+c+'22;">'
+      +(D.showPhoto&&D.photo?'<img src="'+D.photo+'" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid '+c+';display:block;margin:0 auto 16px;"/>':'')
+      +shL("Contact")
+      +'<div style="font-size:'+(fs-2)+'px;color:#555;line-height:2.1;">'
+      +(D.email?'<div>✉ '+esc(D.email)+'</div>':'')
+      +(D.phone?'<div>📞 '+esc(D.phone)+'</div>':'')
+      +(D.location?'<div>📍 '+esc(D.location)+'</div>':'')
+      +(D.linkedin?'<div>in '+esc(D.linkedin)+'</div>':'')
+      +(D.website?'<div>🌐 '+esc(D.website)+'</div>':'')
+      +'</div>'
+      +(D.showSkills&&D.skills.length?shL("Skills")+skillsBlock:'')
+      +'</div>'
+      // right col
+      +'<div style="padding:22px 22px;">'
+      +'<div style="border-bottom:3px solid '+c+';padding-bottom:12px;margin-bottom:4px;">'
+      +'<h1 style="font-size:26px;font-weight:800;color:'+c+';margin:0;font-family:\'Syne\',sans-serif;letter-spacing:-0.5px;">'+esc(D.name)+'</h1>'
+      +'<p style="font-size:'+(fs+1)+'px;font-weight:500;color:#666;margin:3px 0 0;">'+esc(D.role)+'</p>'
+      +'</div>'
+      +(summaryBlock?sh("About")+summaryBlock:'')
+      +(D.exp.length?sh("Experience")+expBlock:'')
+      +(D.edu.length?sh("Education")+eduBlock:'')
+      +(D.showProjects&&D.proj.length?sh("Projects")+projBlock:'')
+      +'</div>'
+      +'</div>';
 
-      document.getElementById('customList').innerHTML = data.custom.map((c, i) => `
-        <div class="card" style="border-color:rgba(34,197,94,0.2);" draggable="true" ondragstart="dragStart(event, 'custom', ${i})" ondragover="dragOver(event)" ondrop="drop(event, 'custom', ${i})">
-          <button class="remove-btn" onclick="removeCustom(${i})">&#10005;</button>
-          <input type="text" value="${escapeHtml(c.title)}" placeholder="e.g. Certifications, Volunteer Work, Languages" oninput="updateCustom(${i}, 'title', this.value)">
-          <textarea placeholder="e.g. AWS Certified Developer, Red Cross Volunteer (2021–Present)..." oninput="updateCustom(${i}, 'content', this.value)">${escapeHtml(c.content)}</textarea>
-        </div>
-      `).join('');
-    }
+  /* ── CLASSIC ── */
+  }else if(D.template==="classic"){
+    html='<div style="padding:28px;min-height:297mm;">'
+      +'<div style="overflow:hidden;border-bottom:3px solid '+c+';padding-bottom:16px;margin-bottom:4px;">'
+      +photoEl
+      +'<h1 style="font-size:28px;font-weight:800;color:#111;margin:0;font-family:\'Syne\',sans-serif;letter-spacing:-0.5px;">'+esc(D.name)+'</h1>'
+      +'<p style="font-size:'+(fs+1)+'px;font-weight:600;color:'+c+';margin:5px 0 8px;">'+esc(D.role)+'</p>'
+      +'<div style="font-size:'+(fs-2)+'px;color:#666;line-height:1.9;">'
+        +contactParts.join("&nbsp; · &nbsp;")
+      +'</div></div>'
+      +(summaryBlock?sh("Summary")+summaryBlock:'')
+      +(D.showSkills&&D.skills.length?sh("Skills")+skillsBlock:'')
+      +(D.exp.length?sh("Work Experience")+expBlock:'')
+      +(D.edu.length?sh("Education")+eduBlock:'')
+      +(D.showProjects&&D.proj.length?sh("Projects")+projBlock:'')
+      +'</div>';
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
+  /* ── MINIMAL ── */
+  }else if(D.template==="minimal"){
+    html='<div style="padding:28px;min-height:297mm;">'
+      +'<div style="text-align:center;padding-bottom:18px;border-bottom:1px solid #e5e5e5;margin-bottom:4px;">'
+      +(D.showPhoto&&D.photo?'<img src="'+D.photo+'" style="width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid '+c+';display:block;margin:0 auto 12px;"/>':'')
+      +'<h1 style="font-size:30px;font-weight:800;color:#111;margin:0;font-family:\'Syne\',sans-serif;letter-spacing:-0.5px;">'+esc(D.name)+'</h1>'
+      +'<p style="font-size:'+(fs+1)+'px;color:'+c+';font-weight:600;margin:5px 0 10px;">'+esc(D.role)+'</p>'
+      +'<div style="font-size:'+(fs-2)+'px;color:#888;line-height:2;">'
+        +contactParts.join(" &nbsp;·&nbsp; ")
+      +'</div></div>'
+      +(summaryBlock?'<div style="margin:14px 0;">'+summaryBlock+'</div>':'')
+      +(D.showSkills&&D.skills.length?'<div style="text-align:center;margin-bottom:4px;">'+sh("Skills")+skillsBlock+'</div>':'')
+      +(D.exp.length?sh("Experience")+expBlock:'')
+      +(D.edu.length?sh("Education")+eduBlock:'')
+      +(D.showProjects&&D.proj.length?sh("Projects")+projBlock:'')
+      +'</div>';
 
-    let dragData = null;
-    function dragStart(e, type, index) { dragData = { type, index }; e.target.classList.add('dragging'); }
-    function dragOver(e) { e.preventDefault(); }
-    function drop(e, type, targetIndex) {
-      e.preventDefault();
-      document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-      if (!dragData || dragData.type !== type) return;
-      const items = data[type];
-      const [removed] = items.splice(dragData.index, 1);
-      items.splice(targetIndex, 0, removed);
-      dragData = null;
-      renderLists(); renderPreview();
-    }
+  /* ── BOLD ── */
+  }else if(D.template==="bold"){
+    html='<div style="min-height:297mm;">'
+      +'<div style="background:'+c+';padding:24px 28px;display:flex;align-items:center;gap:20px;">'
+      +(D.showPhoto&&D.photo?'<img src="'+D.photo+'" style="width:84px;height:84px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.6);flex-shrink:0;"/>':'')
+      +'<div>'
+      +'<h1 style="font-size:28px;font-weight:800;color:#fff;margin:0;font-family:\'Syne\',sans-serif;letter-spacing:-0.5px;">'+esc(D.name)+'</h1>'
+      +'<p style="font-size:'+(fs+2)+'px;color:rgba(255,255,255,0.8);margin:5px 0 0;font-weight:500;">'+esc(D.role)+'</p>'
+      +'</div></div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:7px;padding:14px 28px;border-bottom:2px solid '+c+'22;">'
+        +contactParts.map(function(p){ return '<span style="font-size:'+(fs-2)+'px;background:'+c+'18;color:'+c+';padding:3px 10px;border-radius:20px;">'+p+'</span>'; }).join('')
+      +'</div>'
+      +'<div style="padding:6px 28px 28px;">'
+      +(summaryBlock?sh("About Me")+summaryBlock:'')
+      +(D.showSkills&&D.skills.length?sh("Skills")+skillsBlock:'')
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">'
+      +'<div>'+(D.exp.length?sh("Experience")+expBlock:'')+'</div>'
+      +'<div>'+(D.edu.length?sh("Education")+eduBlock:'')+(D.showProjects&&D.proj.length?sh("Projects")+projBlock:'')+'</div>'
+      +'</div></div></div>';
+  }
 
-    function uploadPhoto(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-          data.photo = ev.target.result;
-          data.showPhoto = true;
-          document.getElementById('photoImg').src = data.photo;
-          document.getElementById('photoImg').style.display = 'block';
-          document.getElementById('photoPlaceholder').style.display = 'none';
-          document.getElementById('togglePhoto').classList.add('active');
-          renderPreview();
-        };
-        reader.readAsDataURL(file);
-      }
-    }
+  var p=document.getElementById("paper");
+  p.innerHTML=html;
+  p.style.fontSize=fs+"px";
+}
 
-    function saveToStorage() {
-      localStorage.setItem("resumeData", JSON.stringify(data));
-      alert("Resume saved!");
-    }
-
-    function exportJson() {
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "resume-data.json"; a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importJson(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-          try {
-            const imported = JSON.parse(ev.target.result);
-            data = { ...defaultData, ...imported };
-            populateForm(); renderLists(); renderPreview();
-          } catch(err) { alert("Invalid JSON file"); }
-        };
-        reader.readAsText(file);
-      }
-    }
-
-    function resetData() {
-      if (confirm("Reset all data to defaults?")) {
-        data = JSON.parse(JSON.stringify(defaultData));
-        localStorage.removeItem("resumeData");
-        document.getElementById('photoImg').style.display = 'none';
-        document.getElementById('photoPlaceholder').style.display = 'block';
-        populateForm(); renderLists(); renderPreview();
-      }
-    }
-
-    function renderPreview() {
-      const fs = data.fontSize + 'px';
-      const col = data.color;
-      
-      const contactItems = [
-        data.email && { icon: "&#9993;", text: data.email },
-        data.phone && { icon: "&#9742;", text: data.phone },
-        data.location && { icon: "&#128205;", text: data.location },
-        data.linkedin && { icon: "in", text: data.linkedin },
-        data.website && { icon: "&#127760;", text: data.website }
-      ].filter(Boolean);
-
-      const skillsHtml = `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;">
-        ${data.skills.map(s => `<span style="background:${col}15;color:${col};padding:2px 8px;border-radius:4px;font-size:calc(${fs} - 3px);font-weight:700;border:1px solid ${col}30;">${s.toUpperCase()}</span>`).join('')}
-      </div>`;
-
-      const experienceHtml = `<div style="display:block;">${data.experience.map(e => `
-        <div style="display:block;margin-bottom:12px;">
-          <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:${fs};">
-            <span>${escapeHtml(e.title)}</span>
-            <span style="color:${col};">${escapeHtml(e.year)}</span>
-          </div>
-          <div style="font-size:calc(${fs} - 2px);color:${col};margin-bottom:2px;">${escapeHtml(e.company)}</div>
-          <p style="font-size:calc(${fs} - 1px);line-height:1.4;color:#333;margin:0;">${escapeHtml(e.description)}</p>
-        </div>
-      `).join('')}</div>`;
-
-      const educationHtml = `<div style="display:block;">${data.education.map(e => `
-        <div style="display:block;margin-bottom:8px;">
-          <p style="font-weight:bold;font-size:${fs};margin:0;">${escapeHtml(e.degree)}</p>
-          <p style="font-size:calc(${fs} - 2px);color:${col};margin:0;">${escapeHtml(e.school)} | ${escapeHtml(e.year)}</p>
-        </div>
-      `).join('')}</div>`;
-
-      const projectsHtml = data.showProjects && data.projects.length > 0 ? `
-        <div style="margin-top:15px;">
-          <h2 style="font-size:12px;font-weight:900;border-bottom:2px solid ${col};color:${col};padding-bottom:5px;margin-bottom:10px;text-transform:uppercase;">Projects</h2>
-          ${data.projects.map(p => `
-            <div style="margin-bottom:10px;">
-              <div style="display:flex;justify-content:space-between;font-weight:bold;font-size:${fs};">
-                <span>${escapeHtml(p.name)}</span>
-                <span style="color:${col};font-size:calc(${fs} - 2px);">${escapeHtml(p.tech)}</span>
-              </div>
-              <p style="font-size:calc(${fs} - 1px);line-height:1.4;color:#333;margin:0;">${escapeHtml(p.description)}</p>
-              ${p.link ? `<p style="font-size:calc(${fs} - 2px);color:${col};margin:0;">${escapeHtml(p.link)}</p>` : ''}
-            </div>
-          `).join('')}
-        </div>
-      ` : '';
-
-      const customHtml = data.custom.map(c => `
-        <div style="margin-top:15px;">
-          <h2 style="font-size:12px;font-weight:900;border-bottom:1px solid ${col};color:${col};padding-bottom:3px;margin-bottom:8px;text-transform:uppercase;">${escapeHtml(c.title)}</h2>
-          <p style="font-size:calc(${fs} - 1px);line-height:1.4;margin:0;">${escapeHtml(c.content)}</p>
-        </div>
-      `).join('');
-
-      const summarySection = data.showSummary && data.summary ? `
-        <div style="margin-bottom:15px;">
-          <h2 style="font-size:12px;font-weight:900;border-bottom:2px solid ${col};color:${col};padding-bottom:5px;margin-bottom:10px;text-transform:uppercase;">Summary</h2>
-          <p style="font-size:calc(${fs} - 1px);line-height:1.5;color:#333;margin:0;">${escapeHtml(data.summary)}</p>
-        </div>
-      ` : '';
-
-      const photoElement = data.showPhoto && data.photo ? 
-        `<img src="${data.photo}" alt="Profile" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid ${col};">` : '';
-
-      const contactLine = `<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:calc(${fs} - 2px);color:#666;margin-top:8px;">
-        ${contactItems.map(c => `<span>${c.icon} ${escapeHtml(c.text)}</span>`).join('')}
-      </div>`;
-
-      let html = '';
-
-      if (data.template === 'modern') {
-        html = `
-          <div style="display:grid;grid-template-columns:1fr 2fr;gap:30px;">
-            <aside style="border-right:1px solid #eee;padding-right:20px;">
-              ${photoElement}
-              <h1 style="font-size:24px;font-weight:900;color:${col};margin:10px 0 0 0;">${escapeHtml(data.name)}</h1>
-              <p style="font-weight:bold;font-size:14px;margin-bottom:20px;opacity:0.7;">${escapeHtml(data.role)}</p>
-              <h4 style="font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:10px;color:${col};">CONTACT</h4>
-              <div style="font-size:calc(${fs} - 2px);color:#444;line-height:1.8;">
-                ${contactItems.map(c => `<div>${escapeHtml(c.text)}</div>`).join('')}
-              </div>
-              <h4 style="font-size:10px;font-weight:900;letter-spacing:1px;margin:20px 0 10px;color:${col};">SKILLS</h4>
-              ${skillsHtml}
-            </aside>
-            <main>
-              ${summarySection}
-              <h2 style="font-size:12px;font-weight:900;border-bottom:2px solid ${col};color:${col};padding-bottom:5px;margin-bottom:15px;">EXPERIENCE</h2>
-              ${experienceHtml}
-              <h2 style="font-size:12px;font-weight:900;border-bottom:2px solid ${col};color:${col};padding-bottom:5px;margin-bottom:15px;margin-top:20px;">EDUCATION</h2>
-              ${educationHtml}
-              ${projectsHtml}
-              ${customHtml}
-            </main>
-          </div>
-        `;
-      } else if (data.template === 'minimal') {
-        html = `
-          <div style="text-align:center;margin-bottom:30px;border-bottom:1px solid #eee;padding-bottom:20px;">
-            ${data.showPhoto && data.photo ? `<img src="${data.photo}" alt="Profile" style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto 15px;display:block;border:3px solid ${col};">` : ''}
-            <h1 style="font-size:32px;font-weight:900;margin:0;">${escapeHtml(data.name)}</h1>
-            <p style="color:${col};font-weight:700;font-size:16px;margin:5px 0 0;">${escapeHtml(data.role)}</p>
-            ${contactLine}
-          </div>
-          ${summarySection}
-          <div style="margin-bottom:20px;">
-            <h2 style="font-size:12px;font-weight:900;color:${col};margin-bottom:10px;text-align:center;letter-spacing:2px;">SKILLS</h2>
-            <div style="display:flex;justify-content:center;">${skillsHtml}</div>
-          </div>
-          <h2 style="font-size:12px;font-weight:900;border-bottom:1px solid #ddd;margin-bottom:10px;text-transform:uppercase;">Experience</h2>
-          ${experienceHtml}
-          <h2 style="font-size:12px;font-weight:900;border-bottom:1px solid #ddd;margin-bottom:10px;text-transform:uppercase;margin-top:15px;">Education</h2>
-          ${educationHtml}
-          ${projectsHtml}
-          ${customHtml}
-        `;
-      } else if (data.template === 'classic') {
-        html = `
-          <div style="padding:20px;background:${col}08;border:1px solid ${col}30;margin-bottom:25px;display:flex;align-items:center;gap:20px;">
-            ${photoElement}
-            <div>
-              <h1 style="font-size:28px;font-weight:900;color:#111;margin:0;">${escapeHtml(data.name)}</h1>
-              <p style="font-weight:bold;color:${col};margin:5px 0 0;">${escapeHtml(data.role)}</p>
-              ${contactLine}
-            </div>
-          </div>
-          ${summarySection}
-          <div style="margin-bottom:20px;">
-            <h3 style="font-size:11px;font-weight:900;color:${col};">SKILLS</h3>
-            ${skillsHtml}
-          </div>
-          <h3 style="font-size:11px;font-weight:900;color:${col};margin-top:20px;">PROFESSIONAL HISTORY</h3>
-          ${experienceHtml}
-          <h3 style="font-size:11px;font-weight:900;color:${col};margin-top:20px;">EDUCATION</h3>
-          ${educationHtml}
-          ${projectsHtml}
-          ${customHtml}
-        `;
-      } else if (data.template === 'creative') {
-        html = `
-          <div style="background:${col};color:white;padding:30px;margin-bottom:25px;display:flex;align-items:center;gap:25px;">
-            ${data.showPhoto && data.photo ? `<img src="${data.photo}" alt="Profile" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;">` : ''}
-            <div>
-              <h1 style="font-size:32px;font-weight:900;margin:0;">${escapeHtml(data.name)}</h1>
-              <p style="font-size:18px;margin:5px 0 0;opacity:0.9;">${escapeHtml(data.role)}</p>
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:15px;margin-bottom:20px;font-size:calc(${fs} - 1px);">
-            ${contactItems.map(c => `<span style="background:${col}15;color:${col};padding:5px 12px;border-radius:20px;">${c.icon} ${escapeHtml(c.text)}</span>`).join('')}
-          </div>
-          ${summarySection}
-          <div style="margin-bottom:20px;">
-            <h2 style="font-size:14px;font-weight:900;color:${col};margin-bottom:10px;">&#9889; SKILLS</h2>
-            ${skillsHtml}
-          </div>
-          <h2 style="font-size:14px;font-weight:900;color:${col};margin-bottom:10px;">&#128188; EXPERIENCE</h2>
-          ${experienceHtml}
-          <h2 style="font-size:14px;font-weight:900;color:${col};margin-bottom:10px;margin-top:20px;">&#127891; EDUCATION</h2>
-          ${educationHtml}
-          ${projectsHtml}
-          ${customHtml}
-        `;
-      } else if (data.template === 'compact') {
-        html = `
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid ${col};padding-bottom:15px;margin-bottom:15px;">
-            <div style="display:flex;gap:15px;align-items:center;">
-              ${photoElement}
-              <div>
-                <h1 style="font-size:22px;font-weight:900;margin:0;color:${col};">${escapeHtml(data.name)}</h1>
-                <p style="font-size:13px;font-weight:600;margin:0;">${escapeHtml(data.role)}</p>
-              </div>
-            </div>
-            <div style="text-align:right;font-size:calc(${fs} - 2px);color:#555;line-height:1.6;">
-              ${contactItems.slice(0, 3).map(c => `<div>${escapeHtml(c.text)}</div>`).join('')}
-            </div>
-          </div>
-          ${data.showSummary && data.summary ? `<p style="font-size:calc(${fs} - 1px);line-height:1.4;color:#333;margin-bottom:12px;font-style:italic;">${escapeHtml(data.summary)}</p>` : ''}
-          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;">
-            ${data.skills.map(s => `<span style="background:${col};color:white;padding:2px 6px;border-radius:3px;font-size:9px;font-weight:700;">${escapeHtml(s)}</span>`).join('')}
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-            <div>
-              <h3 style="font-size:10px;font-weight:900;color:${col};border-bottom:1px solid ${col};padding-bottom:3px;margin-bottom:8px;">EXPERIENCE</h3>
-              ${data.experience.map(e => `
-                <div style="margin-bottom:8px;">
-                  <div style="font-weight:bold;font-size:calc(${fs} - 1px);">${escapeHtml(e.title)}</div>
-                  <div style="font-size:calc(${fs} - 2px);color:${col};">${escapeHtml(e.company)} &bull; ${escapeHtml(e.year)}</div>
-                  <p style="font-size:calc(${fs} - 2px);color:#555;margin:2px 0 0;line-height:1.3;">${escapeHtml(e.description)}</p>
-                </div>
-              `).join('')}
-            </div>
-            <div>
-              <h3 style="font-size:10px;font-weight:900;color:${col};border-bottom:1px solid ${col};padding-bottom:3px;margin-bottom:8px;">EDUCATION</h3>
-              ${educationHtml}
-              ${data.showProjects && data.projects.length > 0 ? `
-                <h3 style="font-size:10px;font-weight:900;color:${col};border-bottom:1px solid ${col};padding-bottom:3px;margin-bottom:8px;margin-top:12px;">PROJECTS</h3>
-                ${data.projects.map(p => `
-                  <div style="margin-bottom:6px;">
-                    <div style="font-weight:bold;font-size:calc(${fs} - 1px);">${escapeHtml(p.name)}</div>
-                    <p style="font-size:calc(${fs} - 2px);color:#555;margin:0;">${escapeHtml(p.description)}</p>
-                  </div>
-                `).join('')}
-              ` : ''}
-            </div>
-          </div>
-          ${customHtml}
-        `;
-      }
-
-      document.getElementById('resumePreview').innerHTML = `<div style="display:block;width:100%;">${html}</div>`;
-      document.getElementById('resumePreview').style.fontFamily = data.fontFamily;
-    }
-
-    function toggleLeftSidebar() {
-      const opened = document.body.classList.toggle('show-left-sidebar');
-      if (opened) document.body.classList.remove('show-right-sidebar');
-    }
-
-    function toggleRightSidebar() {
-      const opened = document.body.classList.toggle('show-right-sidebar');
-      if (opened) document.body.classList.remove('show-left-sidebar');
-    }
-
-    function closeDrawers() {
-      document.body.classList.remove('show-left-sidebar', 'show-right-sidebar');
-    }
-
-    init();
-  </script>
+init();
+</script>
 </body>
 </html>
