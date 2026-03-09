@@ -435,12 +435,69 @@
       .sidebar-right { width: 240px; }
     }
     
+    /* Mobile / small screens */
+    @media (max-width: 900px) {
+      main { flex-direction: column; }
+      header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
+      .header-actions { width: 100%; justify-content: flex-end; gap: 8px; }
+
+      /* Mobile menu buttons */
+      .mobile-menu { display: inline-flex; align-items: center; justify-content: center; width:40px; height:40px; font-size:20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
+      .mobile-right-toggle { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; font-size:16px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); cursor:pointer; }
+
+      /* Make sidebars act like drawers */
+      .sidebar, .sidebar-right {
+        position: fixed;
+        top: 64px;
+        bottom: 0;
+        width: 86%;
+        max-width: 420px;
+        background: var(--bg-secondary);
+        z-index: 200;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+        transform: translateX(-110%);
+        transition: transform 0.28s cubic-bezier(.2,.9,.2,1);
+        will-change: transform;
+      }
+
+      .sidebar-right { right: 0; left: auto; transform: translateX(110%); }
+
+      body.show-left-sidebar .sidebar { transform: translateX(0); }
+      body.show-right-sidebar .sidebar-right { transform: translateX(0); }
+
+      /* Overlay to dim content while drawer open */
+      .mobile-overlay { display: none; position: fixed; inset: 64px 0 0 0; background: rgba(0,0,0,0.45); z-index:150; }
+      body.show-left-sidebar .mobile-overlay, body.show-right-sidebar .mobile-overlay { display: block; }
+
+      .tabs .tab { font-size: 16px; padding: 8px; }
+      .photo-preview { width: 48px; height: 48px; }
+      .photo-upload button { padding: 8px; }
+
+      .grid-2 { grid-template-columns: 1fr; }
+
+      /* Make resume preview readable on phones */
+      .resume {
+        transform: none;
+        width: 100%;
+        max-width: 900px;
+        padding: 10mm;
+        box-shadow: none;
+        font-size: 14px;
+      }
+
+      /* Compact controls */
+      button { padding: 10px 12px; font-size: 15px; min-height:44px; }
+      input, textarea, select { padding: 12px; font-size: 15px; }
+      .add-btn { width: 100%; }
+    }
+    
     /* Hidden file inputs */
     input[type="file"] { display: none; }
   </style>
 </head>
 <body>
   <header>
+    <button class="mobile-menu" aria-label="Open left menu" onclick="toggleLeftSidebar()">&#9776;</button>
     <div class="logo">
       <div class="logo-icon">ARB</div>
       <span>Design Studio Pro</span>
@@ -463,6 +520,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         PDF
       </button>
+      <button class="mobile-right-toggle" aria-label="Open right menu" onclick="toggleRightSidebar()">⚙️</button>
     </div>
   </header>
 
@@ -593,6 +651,7 @@
       </div>
     </aside>
   </main>
+  <div id="mobileOverlay" class="mobile-overlay" onclick="closeDrawers()" aria-hidden="true"></div>
 
   <script>
     // Default data
@@ -1153,6 +1212,21 @@
       document.getElementById('resumePreview').innerHTML = `<div style="display:block;width:100%;">${html}</div>`;
       document.getElementById('resumePreview').style.fontFamily = data.fontFamily;
     }
+
+      // Mobile drawer toggle helpers
+      function toggleLeftSidebar() {
+        const opened = document.body.classList.toggle('show-left-sidebar');
+        if (opened) document.body.classList.remove('show-right-sidebar');
+      }
+
+      function toggleRightSidebar() {
+        const opened = document.body.classList.toggle('show-right-sidebar');
+        if (opened) document.body.classList.remove('show-left-sidebar');
+      }
+
+      function closeDrawers() {
+        document.body.classList.remove('show-left-sidebar', 'show-right-sidebar');
+      }
 
     // Initialize on load
     init();
