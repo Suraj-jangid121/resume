@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - ApnaResumeBuilder</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    /* HOME BUTTON */
+    .top-bar {
+      padding: 15px 40px;
+      border-bottom: 1px solid #222;
+    }
+
+    .home-btn {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .home-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* PAGE CONTENT */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Page heading */
+    .page-heading {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .page-heading h1 {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .page-heading h1 span {
+      color: #2563eb;
+    }
+
+    .page-heading p {
+      color: #aaa;
+      font-size: 16px;
+    }
+
+    /* CONTACT LAYOUT */
+    .contact-layout {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    /* Left side info */
+    .contact-info {
+      flex: 1;
+    }
+
+    .contact-info h2 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .contact-info p {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .info-icon {
+      background-color: #2563eb;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .info-text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .info-text p {
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* Right side form */
+    .contact-form {
+      flex: 1.4;
+      background-color: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 35px;
+    }
+
+    .contact-form h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .contact-form p {
+      color: #aaa;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      color: #ccc;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      color: white;
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #2563eb;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #555;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-group select option {
+      background: #1a1a1a;
+    }
+
+    .full-width {
+      margin-bottom: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 13px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Success message */
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-box .check {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .success-box h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .success-box p {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: transparent;
+      border: 1px solid #2563eb;
+      color: #2563eb;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* FAQ section */
+    .faq-section {
+      margin-top: 70px;
+    }
+
+    .faq-section h2 {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 25px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      background-color: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      padding: 18px 20px;
+      cursor: pointer;
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .faq-arrow {
+      font-size: 18px;
+      color: #2563eb;
+      transition: transform 0.2s;
+    }
+
+    .faq-answer {
+      color: #aaa;
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      border-top: 1px solid #222;
+      padding: 25px 40px;
+      text-align: center;
+      color: #555;
+      font-size: 13px;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .contact-layout { flex-direction: column; }
+      .form-row { flex-direction: column; }
+      .page-heading h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HOME BUTTON -->
+  <div class="top-bar">
+    <a href="#" class="home-btn">🏠 Home</a>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <!-- Heading -->
+    <div class="page-heading">
+      <h1>Contact <span>Us</span></h1>
+      <p>Have a question or need help? We're here for you.</p>
+    </div>
+
+    <!-- Contact Layout -->
+    <div class="contact-layout">
+
+      <!-- Left: Info -->
+      <div class="contact-info">
+        <h2>Get in Touch</h2>
+        <p>Our team is ready to help you build the perfect resume. Reach out to us anytime.</p>
+
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div class="info-text">
+            <h4>Email Us</h4>
+            <p>support@apnaresume.com</p>
+            <p>We reply within 24 hours</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div class="info-text">
+            <h4>Call Us</h4>
+            <p>+1 (800) 555-0173</p>
+            <p>Mon–Fri, 9am – 6pm</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text">
+            <h4>Our Office</h4>
+            <p>340 Innovation Drive</p>
+            <p>San Francisco, CA 94107</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">💬</div>
+          <div class="info-text">
+            <h4>Live Chat</h4>
+            <p>Available on our website</p>
+            <p>Mon–Fri during business hours</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form">
+        <div id="formArea">
+          <h2>Send a Message</h2>
+          <p>Fill out the form below and we'll get back to you soon.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="fname" placeholder="First Name" />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lname" placeholder="Last Name" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="email" placeholder="Email Address" />
+            </div>
+            <div class="form-group">
+              <label>Phone (optional)</label>
+              <input type="tel" id="phone" placeholder="Phone Number" />
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Topic</label>
+            <select id="topic">
+              <option value="" disabled selected>Choose a topic...</option>
+              <option>Account &amp; Billing</option>
+              <option>Resume Templates</option>
+              <option>Technical Issue</option>
+              <option>Feature Request</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Your Message</label>
+            <textarea id="msg" placeholder="Tell us how we can help..."></textarea>
+          </div>
+
+          <button class="submit-btn" onclick="submitForm()">Send Message</button>
+        </div>
+
+        <!-- Success -->
+        <div class="success-box" id="successBox">
+          <div class="check">✅</div>
+          <h3>Message Sent!</h3>
+          <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+          <button class="back-btn" onclick="resetForm()">Send Another Message</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">
+            How do I cancel my subscription?
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">You can cancel anytime from Account Settings → Billing. No cancellation fees apply and you keep access until the end of your billing period.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">
+            Can I download my resume as PDF?
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">Yes! You can download your resume as a PDF for free. Word (.docx) export is available on Pro plans.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">
+            Is ApnaResumeBuilder really free?
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">Yes, our basic plan is completely free. You can build and download your resume without paying anything. We also offer Pro plans with extra templates and features.</div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <div class="faq-question">
+            How does the AI writing help work?
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">Our AI suggests professional phrases and bullet points based on your job title and experience. It helps you write stronger descriptions that get noticed by recruiters.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2024 ApnaResumeBuilder. All rights reserved.
+  </footer>
+
+  <script>
+    function submitForm() {
+      var fname = document.getElementById('fname').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var msg = document.getElementById('msg').value.trim();
+
+      if (!fname || !email || !msg) {
+        alert('Please fill in your name, email, and message.');
+        return;
+      }
+
+      document.getElementById('formArea').style.display = 'none';
+      document.getElementById('successBox').style.display = 'block';
+    }
+
+    function resetForm() {
+      document.getElementById('formArea').style.display = 'block';
+      document.getElementById('successBox').style.display = 'none';
+      document.getElementById('fname').value = '';
+      document.getElementById('lname').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('phone').value = '';
+      document.getElementById('msg').value = '';
+    }
+
+    function toggleFAQ(item) {
+      item.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
